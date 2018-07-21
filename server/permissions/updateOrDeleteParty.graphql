@@ -1,8 +1,8 @@
 query ($user_id: ID!, $node_id: ID!) {
-  SomePostExists(filter: {
+  SomePartyExists(filter: {
     id: $node_id,
-    author: {
+    admin: {
       id: $user_id
-    }  
+    }
   })
 }

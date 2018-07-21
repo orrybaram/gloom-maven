@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
-class CreatePost extends React.Component {
+class CreateParty extends React.Component {
 
   state = {
     description: '',
@@ -34,31 +34,31 @@ class CreatePost extends React.Component {
             <img src={this.state.imageUrl} alt='' className='w-100 mv3' />
           }
           {this.state.description && this.state.imageUrl &&
-            <button className='pa3 bg-black-10 bn dim ttu pointer' onClick={this.handlePost}>Post</button>
+            <button className='pa3 bg-black-10 bn dim ttu pointer' onClick={this.handleSubmit}>Create</button>
           }
         </div>
       </div>
     )
   }
 
-  handlePost = async () => {
+  handleSubmit = async () => {
     // redirect if no user is logged in
     if (!this.props.loggedInUserQuery.loggedInUser) {
-      console.warn('only logged in users can create new posts')
+      console.warn('only logged in users can create new parties')
       return
     }
 
     const { description, imageUrl } = this.state
     const authorId = this.props.loggedInUserQuery.loggedInUser.id
 
-    await this.props.createPostMutation({variables: { description, imageUrl, authorId }})
+    await this.props.createPartyMutation({variables: { description, imageUrl, authorId }})
     this.props.history.replace('/')
   }
 }
 
-const CREATE_POST_MUTATION = gql`
-  mutation CreatePostMutation ($description: String!, $imageUrl: String!, $authorId: ID!) {
-    createPost(description: $description, imageUrl: $imageUrl, authorId: $authorId) {
+const CREATE_PARTY_MUTATION = gql`
+  mutation CreatePartyMutation ($description: String!, $imageUrl: String!, $authorId: ID!) {
+    createParty(description: $description, imageUrl: $imageUrl, authorId: $authorId) {
       id
     }
   }
@@ -73,9 +73,9 @@ const LOGGED_IN_USER_QUERY = gql`
 `
 
 export default compose(
-  graphql(CREATE_POST_MUTATION, { name: 'createPostMutation' }),
-  graphql(LOGGED_IN_USER_QUERY, { 
+  graphql(CREATE_PARTY_MUTATION, { name: 'createPartyMutation' }),
+  graphql(LOGGED_IN_USER_QUERY, {
     name: 'loggedInUserQuery',
     options: { fetchPolicy: 'network-only' }
   })
-)(withRouter(CreatePost))
+)(withRouter(CreateParty))

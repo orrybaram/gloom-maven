@@ -2,7 +2,7 @@ import React from 'react'
 import { graphql } from 'react-apollo'
 import { withRouter } from 'react-router-dom'
 import ListPage from './ListPage'
-import NewPostLink from './NewPostLink'
+import NewPartyLink from './NewPartyLink'
 import gql from 'graphql-tag'
 
 class App extends React.Component {
@@ -53,7 +53,7 @@ class App extends React.Component {
           </span>
         </div>
         <ListPage />
-        <NewPostLink />
+        <NewPartyLink />
       </div>
     )
   }

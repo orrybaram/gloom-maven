@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class Post extends React.Component {
+export default class Party extends React.Component {
 
   render () {
     return (
@@ -8,13 +8,13 @@ export default class Post extends React.Component {
         <div
           className='w-100'
           style={{
-            backgroundImage: `url(${this.props.post.imageUrl})`,
+            backgroundImage: `url(${this.props.party.imageUrl})`,
             backgroundSize: 'cover',
             paddingBottom: '100%',
           }}
         />
         <div className='pt3'>
-          {this.props.post.description}&nbsp;
+          {this.props.party.description}&nbsp;
         </div>
       </div>
     )

@@ -42,35 +42,41 @@ functions:
 
 
 # Model/Relation permissions are used to limit the API access
-# To take the burden of thinking about those while development, we 
+# To take the burden of thinking about those while development, we
 # preconfigured the wildcard ("*") permission that allows everything
 # Read more here:
 # https://docs-next.graph.cool/reference/auth/authorization/overview-iegoo0heez
 permissions:
-  # Everyone can read posts
-- operation: Post.read
-  # Only authenticated users can create posts
-- operation: Post.create
+  # Only members of the party can read party
+- operation: Party.read
   authenticated: true
-  # Only the author of a post can update it
-- operation: Post.update
+  query: ./permissions/readParty.graphql
+  # Only authenticated users can create parties
+- operation: Party.create
   authenticated: true
-  query: ./permissions/updateOrDeletePost.graphql
-  # Only the author of a post can delete it
-- operation: Post.delete
+  # Only the author of a party can update it
+- operation: Party.update
   authenticated: true
-  query: ./permissions/updateOrDeletePost.graphql
+  query: ./permissions/updateOrDeleteParty.graphql
+  # Only the author of a party can delete it
+- operation: Party.delete
+  authenticated: true
+  query: ./permissions/updateOrDeleteParty.graphql
   # Everyone can read the id, name and email fields of users
 - operation: User.read
   fields:
     - id
     - name
     - email
-  # Only authenticated users can create relation between a user and a post
-- operation: UserPosts.connect
+  # Only authenticated users can create an owned relation between a user and a party
+- operation: UserOwnedParties.connect
   authenticated: true
 
-  
+  # Only authenticated users can create a joined relation between a user and a party
+- operation: UserJoinedParties.connect
+  authenticated: true
+
+
 # Your root tokens used for functions to get full access to the API
 # Read more here:
 # https://docs-next.graph.cool/reference/auth/authentication/authentication-tokens-eip7ahqu5o

@@ -1,0 +1,8 @@
+query ($user_id: ID!, $node_id: ID!) {
+  SomePartyExists(filter: {
+    id: $node_id,
+    members_some: {
+      id: $user_id
+    }
+  })
+}
