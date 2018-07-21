@@ -6,7 +6,8 @@ import gql from 'graphql-tag'
 class CreateParty extends React.Component {
 
   state = {
-    description: '',
+    name: '',
+    location: 'Gloomhaven',
     imageUrl: '',
   }
 
@@ -20,9 +21,15 @@ class CreateParty extends React.Component {
         <div style={{ maxWidth: 400 }} className=''>
           <input
             className='w-100 pa3 mv2'
-            value={this.state.description}
-            placeholder='Description'
-            onChange={(e) => this.setState({description: e.target.value})}
+            value={this.state.name}
+            placeholder='Name'
+            onChange={(e) => this.setState({name: e.target.value})}
+          />
+          <input
+            className='w-100 pa3 mv2'
+            value={this.state.location}
+            placeholder='Location'
+            onChange={(e) => this.setState({location: e.target.value})}
           />
           <input
             className='w-100 pa3 mv2'
@@ -33,7 +40,7 @@ class CreateParty extends React.Component {
           {this.state.imageUrl &&
             <img src={this.state.imageUrl} alt='' className='w-100 mv3' />
           }
-          {this.state.description && this.state.imageUrl &&
+          {this.state.location && this.state.imageUrl &&
             <button className='pa3 bg-black-10 bn dim ttu pointer' onClick={this.handleSubmit}>Create</button>
           }
         </div>
@@ -48,17 +55,27 @@ class CreateParty extends React.Component {
       return
     }
 
-    const { description, imageUrl } = this.state
-    const authorId = this.props.loggedInUserQuery.loggedInUser.id
+    const { location, imageUrl, name } = this.state
+    const adminId = this.props.loggedInUserQuery.loggedInUser.id
 
-    await this.props.createPartyMutation({variables: { description, imageUrl, authorId }})
+    await this.props.createPartyMutation({variables: { name, location, imageUrl, adminId }})
     this.props.history.replace('/')
   }
 }
 
 const CREATE_PARTY_MUTATION = gql`
-  mutation CreatePartyMutation ($description: String!, $imageUrl: String!, $authorId: ID!) {
-    createParty(description: $description, imageUrl: $imageUrl, authorId: $authorId) {
+  mutation CreatePartyMutation (
+    $adminId: ID!,
+    $name: String!,
+    $location: String!,
+    $imageUrl: String!,
+  ) {
+    createParty(
+      adminId: $adminId,
+      name: $name,
+      location: $location,
+      imageUrl: $imageUrl
+    ) {
       id
     }
   }

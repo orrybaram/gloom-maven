@@ -4,6 +4,7 @@ import App from './components/App'
 import CreateParty from './components/CreateParty'
 import CreateUser from './components/CreateUser'
 import LoginUser from './components/LoginUser'
+import PartyDetailPage from './components/PartyDetailPage'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import { ApolloClient } from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'
@@ -40,6 +41,7 @@ ReactDOM.render((
         <Route path='/create' component={CreateParty} />
         <Route path='/login' component={LoginUser} />
         <Route path='/signup' component={CreateUser} />
+        <Route path='/parties/:id' component={PartyDetailPage} />
       </div>
     </Router>
   </ApolloProvider>

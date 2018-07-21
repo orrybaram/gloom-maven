@@ -47,21 +47,26 @@ functions:
 # Read more here:
 # https://docs-next.graph.cool/reference/auth/authorization/overview-iegoo0heez
 permissions:
+
   # Only members of the party can read party
 - operation: Party.read
   authenticated: true
   query: ./permissions/readParty.graphql
+
   # Only authenticated users can create parties
 - operation: Party.create
   authenticated: true
+
   # Only the author of a party can update it
 - operation: Party.update
   authenticated: true
   query: ./permissions/updateOrDeleteParty.graphql
+
   # Only the author of a party can delete it
 - operation: Party.delete
   authenticated: true
   query: ./permissions/updateOrDeleteParty.graphql
+
   # Everyone can read the id, name and email fields of users
 - operation: User.read
   fields:

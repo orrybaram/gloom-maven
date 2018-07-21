@@ -7,21 +7,21 @@ import gql from 'graphql-tag'
 
 class App extends React.Component {
 
-  _logout = () => {
+  logout = () => {
     // remove token from local storage and reload page to reset apollo client
     localStorage.removeItem('graphcoolToken')
     window.location.reload()
   }
 
-  _showLogin = () => {
+  showLogin = () => {
     this.props.history.replace('/login')
   }
 
-  _showSignup = () => {
+  showSignup = () => {
     this.props.history.replace('/signup')
   }
 
-  _isLoggedIn = () => {
+  isLoggedIn = () => {
     return this.props.loggedInUserQuery.loggedInUser && this.props.loggedInUserQuery.loggedInUser.id !== null
   }
 
@@ -33,9 +33,9 @@ class App extends React.Component {
 
     if (this._isLoggedIn()) {
       return this.renderLoggedIn()
-    } else {
-      return this.renderLoggedOut()
     }
+
+    return this.renderLoggedOut()
   }
 
   renderLoggedIn() {
@@ -47,7 +47,7 @@ class App extends React.Component {
         <div className='pv3'>
           <span
             className='dib bg-red white pa3 pointer dim'
-            onClick={this._logout}
+            onClick={this.logout}
           >
             Logout
           </span>
@@ -79,7 +79,6 @@ class App extends React.Component {
             </span>
           </div>
         </div>
-        <ListPage />
       </div>
     )
   }

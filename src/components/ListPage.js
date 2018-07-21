@@ -9,6 +9,9 @@ class ListPage extends React.Component {
     if (this.props.allPartiesQuery.loading) {
       return (<div>Loading</div>)
     }
+
+    console.log(this.props);
+
     return (
       <div className='w-100 flex justify-center'>
         <div className='w-100' style={{ maxWidth: 400 }}>
@@ -25,8 +28,7 @@ const ALL_PARTIES_QUERY = gql`
   query AllPartiesQuery {
     allParties(orderBy: createdAt_DESC) {
       id
-      imageUrl
-      description
+      name
     }
   }
 `

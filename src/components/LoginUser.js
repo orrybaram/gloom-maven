@@ -4,14 +4,14 @@ import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
 class CreateLogin extends React.Component {
-  
+
   state = {
     email: '',
     password: '',
   }
 
   render () {
-    if (this.props.data.loading) {
+    if (this.props.loggedInUserQuery.loading) {
 
       return (
         <div className='w-100 pa4 flex justify-center'>
@@ -21,7 +21,7 @@ class CreateLogin extends React.Component {
     }
 
     // redirect if user is logged in
-    if (this.props.data.loggedInUser.id) {
+    if (this.props.loggedInUserQuery.loggedInUser.id) {
       console.warn('already logged in')
       this.props.history.replace('/')
     }
@@ -61,7 +61,7 @@ class CreateLogin extends React.Component {
 }
 
 const AUTHENTICATE_USER_MUTATION = gql`
-  mutation AuthenticateUserMutation ($email: String!, $password: String!) { 
+  mutation AuthenticateUserMutation ($email: String!, $password: String!) {
     authenticateUser(email: $email, password: $password) {
       token
     }
@@ -77,7 +77,7 @@ const LOGGED_IN_USER_QUERY = gql`
 `
 export default compose(
   graphql(AUTHENTICATE_USER_MUTATION, {name: 'authenticateUserMutation'}),
-  graphql(LOGGED_IN_USER_QUERY, { 
+  graphql(LOGGED_IN_USER_QUERY, {
     name: 'loggedInUserQuery',
     options: { fetchPolicy: 'network-only' }
   })
