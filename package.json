@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "17.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.9.1",
     "react-scripts": "^1.0.16"
   },
   "dependencies": {
@@ -12,6 +18,7 @@
     "apollo-link-http": "^1.1.0",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.5.0",
+    "prop-types": "^15.6.2",
     "react": "^16.0.0",
     "react-apollo": "^2.0.0",
     "react-dom": "^16.0.0",
@@ -22,9 +29,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "yarn eslint ./src"
   },
   "eslintConfig": {
-    "extends": "./node_modules/react-scripts/config/eslint.js"
+    "extends": ".eslintrc"
   }
 }
