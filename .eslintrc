@@ -9,6 +9,7 @@
   },
   "rules": {
     "react/jsx-filename-extension": "none",
-    "react/destructuring-assignment": "none"
+    "react/destructuring-assignment": "none",
+    "react/prefer-stateless-function": "none",
   }
 }

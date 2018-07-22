@@ -1,37 +1,55 @@
-import React from 'react'
-import { graphql, compose } from 'react-apollo'
-import { withRouter } from 'react-router-dom'
-import gql from 'graphql-tag'
+import React from 'react';
+import { graphql, compose } from 'react-apollo';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 
 class PartyDetailPage extends React.Component {
+  static propTypes = {
+    history: PropTypes.shape({
+      replace: PropTypes.func,
+    }).isRequired,
+    deletePartyMutation: PropTypes.func.isRequired,
+    partyQuery: PropTypes.shape({
+      loading: PropTypes.bool,
+      Party: PropTypes.shape({
+        id: PropTypes.string,
+      }),
+    }).isRequired,
+  }
+
+  handleDelete = async () => {
+    await this.props.deletePartyMutation({ variables: { id: this.props.partyQuery.Party.id } });
+    this.props.history.replace('/');
+  }
 
   render() {
     if (this.props.partyQuery.loading) {
       return (
-        <div className='flex w-100 h-100 items-center justify-center pt7'>
+        <div className="flex w-100 h-100 items-center justify-center pt7">
           <div>
             Loading
           </div>
         </div>
-      )
+      );
     }
 
-    const { Party } = this.props.partyQuery
-
-    console.log(this.props);
+    const { Party } = this.props.partyQuery;
 
     return (
       <div>
-        <h1>{Party.name}</h1>
-        <div>admin: {Party.admin.name}</div>
-        <button>delete</button>
+        <h1>
+          {Party.name}
+        </h1>
+        <div>
+          admin:
+          {Party.admin.name}
+        </div>
+        <button type="button" onSubmit={this.handleDelete}>
+          delete
+        </button>
       </div>
-    )
-  }
-
-  handleDelete = async () => {
-    await this.props.deletePartyMutation({variables: {id: this.props.partyQuery.Party.id}})
-    this.props.history.replace('/')
+    );
   }
 }
 
@@ -41,7 +59,7 @@ const DELETE_PARTY_MUTATION = gql`
       id
     }
   }
-`
+`;
 
 const PARTY_QUERY = gql`
   query partyQuery($id: ID!) {
@@ -53,26 +71,23 @@ const PARTY_QUERY = gql`
       }
     }
   }
-`
+`;
 
 const DetailPageWithGraphQL = compose(
   graphql(PARTY_QUERY, {
     name: 'partyQuery',
     // see documentation on computing query variables from props in wrapper
     // http://dev.apollodata.com/react/queries.html#options-from-props
-    options: ({match}) => ({
+    options: ({ match }) => ({
       variables: {
         id: match.params.id,
       },
     }),
   }),
   graphql(DELETE_PARTY_MUTATION, {
-    name: 'deletePartyMutation'
-  })
-)(PartyDetailPage)
+    name: 'deletePartyMutation',
+  }),
+)(PartyDetailPage);
 
-
-
-const DetailPageWithDelete = graphql(DELETE_PARTY_MUTATION)(DetailPageWithGraphQL)
-
-export default withRouter(DetailPageWithDelete)
+const DetailPageWithDelete = graphql(DELETE_PARTY_MUTATION)(DetailPageWithGraphQL);
+export default withRouter(DetailPageWithDelete);

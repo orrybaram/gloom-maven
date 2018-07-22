@@ -1,25 +1,36 @@
-import React from 'react'
-import Party from '../components/Party'
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
+import React from 'react';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
+import Party from './Party';
 
 class ListPage extends React.Component {
+  static propTypes = {
+    allPartiesQuery: PropTypes.shape({
+      loading: PropTypes.bool,
+      allParties: PropTypes.array,
+    }).isRequired,
+  }
 
-  render () {
-    if (this.props.allParties.loading) {
-      return (<div>Loading</div>)
+  render() {
+    if (this.props.allPartiesQuery.loading) {
+      return (
+        <div>
+          Loading
+        </div>
+      );
     }
 
     return (
-      <div className='w-100 flex justify-center'>
+      <div className="w-100 flex justify-center">
         Your Parties:
-        <div className='w-100' style={{ maxWidth: 400 }}>
-          {this.props.allParties.allParties.map((party) =>
+        <div className="w-100" style={{ maxWidth: 400 }}>
+          {this.props.allPartiesQuery.allParties.map(party => (
             <Party key={party.id} party={party} />
-          )}
+          ))}
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -40,19 +51,19 @@ const ALL_PARTIES_QUERY = gql`
       name
     }
   }
-`
+`;
 
 const ListPageWithGraphQL = (
   graphql(ALL_PARTIES_QUERY, {
-    name: 'allParties',
+    name: 'allPartiesQuery',
     // see documentation on computing query variables from props in wrapper
     // http://dev.apollodata.com/react/queries.html#options-from-props
-    options: ({ match, userId }) => ({
+    options: ({ userId }) => ({
       variables: {
         user_id: userId,
       },
     }),
   })
-)(ListPage)
+)(ListPage);
 
 export default ListPageWithGraphQL;
