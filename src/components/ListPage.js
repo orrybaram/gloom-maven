@@ -6,16 +6,15 @@ import gql from 'graphql-tag'
 class ListPage extends React.Component {
 
   render () {
-    if (this.props.allPartiesQuery.loading) {
+    if (this.props.allParties.loading) {
       return (<div>Loading</div>)
     }
 
-    console.log(this.props);
-
     return (
       <div className='w-100 flex justify-center'>
+        Your Parties:
         <div className='w-100' style={{ maxWidth: 400 }}>
-          {this.props.allPartiesQuery.allParties.map((party) =>
+          {this.props.allParties.allParties.map((party) =>
             <Party key={party.id} party={party} />
           )}
         </div>
@@ -25,12 +24,35 @@ class ListPage extends React.Component {
 }
 
 const ALL_PARTIES_QUERY = gql`
-  query AllPartiesQuery {
-    allParties(orderBy: createdAt_DESC) {
+  query AllPartiesQuery($user_id: ID!) {
+    allParties(orderBy: createdAt_DESC, filter: {
+      OR: [{
+        members_some: {
+          id: $user_id
+        }
+      }, {
+        admin: {
+          id: $user_id
+        }
+      }]
+    }) {
       id
       name
     }
   }
 `
 
-export default graphql(ALL_PARTIES_QUERY, { name: 'allPartiesQuery'})(ListPage)
+const ListPageWithGraphQL = (
+  graphql(ALL_PARTIES_QUERY, {
+    name: 'allParties',
+    // see documentation on computing query variables from props in wrapper
+    // http://dev.apollodata.com/react/queries.html#options-from-props
+    options: ({ match, userId }) => ({
+      variables: {
+        user_id: userId,
+      },
+    }),
+  })
+)(ListPage)
+
+export default ListPageWithGraphQL;

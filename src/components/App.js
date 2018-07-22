@@ -1,8 +1,10 @@
 import React from 'react'
 import { graphql } from 'react-apollo'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Route, Switch } from 'react-router-dom'
 import ListPage from './ListPage'
+import CreateParty from './CreateParty'
 import NewPartyLink from './NewPartyLink'
+import PartyDetailPage from './PartyDetailPage'
 import gql from 'graphql-tag'
 
 class App extends React.Component {
@@ -25,24 +27,11 @@ class App extends React.Component {
     return this.props.loggedInUserQuery.loggedInUser && this.props.loggedInUserQuery.loggedInUser.id !== null
   }
 
-  render () {
-
-    if (this.props.loggedInUserQuery.loading) {
-      return (<div>Loading</div>)
-    }
-
-    if (this._isLoggedIn()) {
-      return this.renderLoggedIn()
-    }
-
-    return this.renderLoggedOut()
-  }
-
   renderLoggedIn() {
     return (
       <div>
         <span>
-          User ID: {this.props.loggedInUserQuery.loggedInUser.id}
+          {this.props.loggedInUserQuery.loggedInUser.id}
         </span>
         <div className='pv3'>
           <span
@@ -52,8 +41,17 @@ class App extends React.Component {
             Logout
           </span>
         </div>
-        <ListPage />
-        <NewPartyLink />
+
+        <Route path="/parties/:id" component={PartyDetailPage} />
+
+        <Route path='/create' component={CreateParty} />
+        <Route
+          exact
+          path={this.props.match.url}
+          render={() => (
+            <div><ListPage userId={this.props.loggedInUserQuery.loggedInUser.id} /><NewPartyLink /></div>
+          )}
+        />
       </div>
     )
   }
@@ -64,7 +62,7 @@ class App extends React.Component {
         <div className='pv3'>
           <div className='w-100 pa4 flex justify-center'>
             <span
-              onClick={this._showLogin}
+              onClick={this.showLogin}
               className='dib pa3 white bg-blue dim pointer'
             >
               Log in with Email
@@ -72,7 +70,7 @@ class App extends React.Component {
           </div>
           <div className='w-100 flex justify-center'>
             <span
-              onClick={this._showSignup}
+              onClick={this.showSignup}
               className='dib pa3 white bg-blue dim pointer'
             >
               Sign up with Email
@@ -81,6 +79,19 @@ class App extends React.Component {
         </div>
       </div>
     )
+  }
+
+  render () {
+
+    if (this.props.loggedInUserQuery.loading) {
+      return (<div>Loading</div>)
+    }
+
+    if (this.isLoggedIn()) {
+      return this.renderLoggedIn()
+    }
+
+    return this.renderLoggedOut()
   }
 }
 

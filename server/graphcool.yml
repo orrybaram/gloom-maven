@@ -51,7 +51,8 @@ permissions:
   # Only members of the party can read party
 - operation: Party.read
   authenticated: true
-  query: ./permissions/readParty.graphql
+  # TODO: make an invite/join system so only members can view party
+  # query: ./permissions/readParty.graphql
 
   # Only authenticated users can create parties
 - operation: Party.create
