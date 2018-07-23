@@ -15,13 +15,12 @@ class CreateParty extends React.Component {
     history: PropTypes.shape({
       replace: PropTypes.func,
     }).isRequired,
-    createPartyMutation: PropTypes.shape({}).isRequired,
+    createPartyMutation: PropTypes.func.isRequired,
   }
 
   state = {
     name: '',
     location: 'Gloomhaven',
-    imageUrl: '',
   }
 
   handleSubmit = async () => {

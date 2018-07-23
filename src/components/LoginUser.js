@@ -35,13 +35,18 @@ class CreateLogin extends React.Component {
     if (this.props.loggedInUserQuery.loading) {
       return (
         <div>
-          Loading
+          Loading...
         </div>
       );
     }
 
+    console.log(this.props.loggedInUserQuery)
+
     // redirect if user is logged in
-    if (this.props.loggedInUserQuery.loggedInUser.id) {
+    if (
+      this.props.loggedInUserQuery.loggedInUser
+      && this.props.loggedInUserQuery.loggedInUser.id
+    ) {
       console.warn('already logged in');
       this.props.history.replace('/');
     }
@@ -61,13 +66,9 @@ class CreateLogin extends React.Component {
             onChange={e => this.setState({ password: e.target.value })}
           />
 
-          {this.state.email && this.state.password
-          && (
           <button type="submit" onClick={this.authenticateUser}>
             Log in
           </button>
-          )
-          }
         </div>
       </div>
     );

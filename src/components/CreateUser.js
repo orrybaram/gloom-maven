@@ -52,7 +52,10 @@ class CreateUser extends React.Component {
     }
 
     // redirect if user is logged in
-    if (this.props.loggedInUserQuery.loggedInUser.id) {
+    if (
+      this.props.loggedInUserQuery.loggedInUser
+      && this.props.loggedInUserQuery.loggedInUser.id
+    ) {
       console.warn('Already logged in');
       this.props.history.replace('/');
     }
@@ -89,7 +92,7 @@ class CreateUser extends React.Component {
 }
 
 const SIGNUP_USER_MUTATION = gql`
-  mutation SignupUserMutation ($email: String!, $password: String!, $name: String) {
+  mutation SignupUserMutation ($email: String!, $password: String!, $name: String!) {
     signupUser(email: $email, password: $password, name: $name) {
       id
       token
