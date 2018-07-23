@@ -9,6 +9,7 @@ class CreateUser extends React.Component {
     loggedInUserQuery: PropTypes.shape({
       loggedInUser: PropTypes.shape({
         id: PropTypes.string,
+        name: PropTypes.string,
       }),
       loading: PropTypes.bool,
     }).isRequired,
@@ -76,13 +77,11 @@ class CreateUser extends React.Component {
             onChange={e => this.setState({ name: e.target.value })}
           />
 
-          {this.state.name && this.state.email && this.state.password
-          && (
-          <button type="submit" onClick={this.signupUser}>
-            Sign up
-          </button>
-          )
-          }
+          {this.state.name && this.state.email && this.state.password && (
+            <button type="submit" onClick={this.signupUser}>
+              Sign up
+            </button>
+          )}
         </div>
       </div>
     );
