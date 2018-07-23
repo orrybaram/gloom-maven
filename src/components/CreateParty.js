@@ -75,13 +75,11 @@ const CREATE_PARTY_MUTATION = gql`
     $adminId: ID!,
     $name: String!,
     $location: String!,
-    $imageUrl: String!,
   ) {
     createParty(
       adminId: $adminId,
       name: $name,
       location: $location,
-      imageUrl: $imageUrl
     ) {
       id
     }
