@@ -1,12 +1,23 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
+import { graphql, Query } from 'react-apollo';
 import { withRouter, Route } from 'react-router-dom';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import LoginPage from './LoginPage';
 import CreateParty from './CreateParty';
 import Dashboard from './Dashboard';
+import WithCurrentUser from './WithCurrentUser';
 import PartyDetailPage from './PartyDetailPage';
+
+const GET_CURRENT_USER = gql`
+  query User($userId: ID!) {
+    User(id: $userId) {
+      id
+      name
+      email
+    }
+  }
+`;
 
 class App extends React.Component {
   static propTypes = {
@@ -47,30 +58,23 @@ class App extends React.Component {
     }
 
     return (
-      <div>
-        <span>
-          {this.props.loggedInUserQuery.loggedInUser.id}
-        </span>
+      <WithCurrentUser userId={this.props.loggedInUserQuery.loggedInUser.id}>
         <div>
-          <button
-            className="dib bg-red white pa3 pointer dim"
-            onClick={this.logout}
-            type="button"
-          >
-            Logout
-          </button>
-        </div>
+          <div>
+            <button
+              className="dib bg-red white pa3 pointer dim"
+              onClick={this.logout}
+              type="button"
+            >
+              Logout
+            </button>
+          </div>
 
-        <Route path="/parties/:id" component={PartyDetailPage} />
-        <Route path="/create" component={CreateParty} />
-        <Route
-          exact
-          path={this.props.match.url}
-          render={() => (
-            <Dashboard userId={this.props.loggedInUserQuery.loggedInUser.id} />
-          )}
-        />
-      </div>
+          <Route path="/parties/:id" component={PartyDetailPage} />
+          <Route path="/create" component={CreateParty} />
+          <Route exact path={this.props.match.url} component={Dashboard} />
+        </div>
+      </WithCurrentUser>
     );
   }
 }

@@ -1,23 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import ListPage from './ListPage';
 import NewPartyLink from './NewPartyLink';
-
-const propTypes = {
-  userId: PropTypes.string.isRequired,
-};
+import { CurrentUserContext } from './WithCurrentUser';
 
 const Wrapper = styled.div`
   background: red;
 `;
 
-const Dashboard = ({ userId }) => (
-  <Wrapper>
-    <ListPage userId={userId} />
-    <NewPartyLink />
-  </Wrapper>
+const Dashboard = () => (
+  <CurrentUserContext.Consumer>
+    {({ user, loading }) => (
+      <Wrapper>
+        {!loading && (
+          <div>
+            <ListPage userId={user.id} />
+            <NewPartyLink />
+          </div>
+        )}
+      </Wrapper>
+    )}
+
+  </CurrentUserContext.Consumer>
 );
 
-Dashboard.propTypes = propTypes;
 export default Dashboard;

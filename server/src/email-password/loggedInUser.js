@@ -5,7 +5,6 @@ function getUser(api, userId) {
     query {
       User(id: "${userId}"){
         id
-        name
       }
     }`)
     .then((userQueryResult) => {
@@ -21,7 +20,7 @@ function getUser(api, userId) {
 
 module.exports = function loggedInUser(event) {
   if (!event.context.auth || !event.context.auth.nodeId) {
-    return { data: { id: null, name: '' } };
+    return { data: { id: null } };
   }
 
   const userId = event.context.auth.nodeId;
