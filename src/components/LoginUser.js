@@ -11,6 +11,7 @@ class CreateLogin extends React.Component {
         id: PropTypes.string,
       }),
       loading: PropTypes.bool,
+      refetch: PropTypes.func,
     }).isRequired,
     history: PropTypes.shape({
       replace: PropTypes.func,
@@ -28,6 +29,7 @@ class CreateLogin extends React.Component {
 
     const response = await this.props.authenticateUserMutation({ variables: { email, password } });
     localStorage.setItem('graphcoolToken', response.data.authenticateUser.token);
+    await this.props.loggedInUserQuery.refetch();
     this.props.history.replace('/');
   }
 
@@ -39,8 +41,6 @@ class CreateLogin extends React.Component {
         </div>
       );
     }
-
-    console.log(this.props.loggedInUserQuery)
 
     // redirect if user is logged in
     if (

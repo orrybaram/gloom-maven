@@ -35,8 +35,8 @@ ReactDOM.render((
     <Router>
       <div>
         <Route path="/" component={App} />
-        <Route exact path="/login" component={LoginUser} />
-        <Route exact path="/signup" component={CreateUser} />
+        <Route path="/login" component={LoginUser} />
+        <Route path="/signup" component={CreateUser} />
       </div>
     </Router>
   </ApolloProvider>

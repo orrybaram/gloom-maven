@@ -17,6 +17,7 @@ class App extends React.Component {
         id: PropTypes.string,
         name: PropTypes.string,
       }),
+      refetch: PropTypes.func,
       loading: PropTypes.bool,
     }).isRequired,
     match: PropTypes.shape({
@@ -62,7 +63,6 @@ const LOGGED_IN_USER_QUERY = gql`
   query LoggedInUserQuery {
     loggedInUser {
       id
-      name
     }
   }
 `;

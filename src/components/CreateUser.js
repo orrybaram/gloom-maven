@@ -11,6 +11,7 @@ class CreateUser extends React.Component {
         id: PropTypes.string,
         name: PropTypes.string,
       }),
+      refetch: PropTypes.func,
       loading: PropTypes.bool,
     }).isRequired,
     history: PropTypes.shape({
@@ -35,6 +36,7 @@ class CreateUser extends React.Component {
     try {
       const user = await this.props.signupUserMutation({ variables: { email, password, name } });
       localStorage.setItem('graphcoolToken', user.data.signupUser.token);
+      await this.props.loggedInUserQuery.refetch();
       this.props.history.replace('/');
     } catch (e) {
       console.error('An error occured: ', e);
