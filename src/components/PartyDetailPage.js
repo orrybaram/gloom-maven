@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, compose } from 'react-apollo';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
@@ -14,6 +14,9 @@ class PartyDetailPage extends React.Component {
       loading: PropTypes.bool,
       Party: PropTypes.shape({
         id: PropTypes.string,
+        name: PropTypes.string,
+        admin: PropTypes.shape({}),
+        location: PropTypes.string,
       }),
     }).isRequired,
   }
@@ -36,14 +39,16 @@ class PartyDetailPage extends React.Component {
 
     return (
       <div>
+        <Link to="/">{'<-'} Back</Link>
         <h1>
           {Party.name}
         </h1>
+        <h2>{Party.location}</h2>
         <div>
           admin:
           {Party.admin.name}
         </div>
-        <button type="button" onSubmit={this.handleDelete}>
+        <button type="button" onClick={this.handleDelete}>
           delete
         </button>
       </div>
@@ -64,6 +69,7 @@ const PARTY_QUERY = gql`
     Party(id: $id) {
       id
       name
+      location
       admin {
         name
       }

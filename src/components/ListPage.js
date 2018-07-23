@@ -8,8 +8,13 @@ class ListPage extends React.Component {
   static propTypes = {
     allPartiesQuery: PropTypes.shape({
       loading: PropTypes.bool,
+      refetch: PropTypes.func,
       allParties: PropTypes.array,
     }).isRequired,
+  }
+
+  componentDidMount() {
+    this.props.allPartiesQuery.refetch();
   }
 
   render() {

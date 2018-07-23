@@ -5,14 +5,14 @@ import NewPartyLink from './NewPartyLink';
 import { CurrentUserContext } from './WithCurrentUser';
 
 const Wrapper = styled.div`
-  background: red;
+  background: #f1f1f1;
 `;
 
 const Dashboard = () => (
   <CurrentUserContext.Consumer>
-    {({ user, loading }) => (
+    {({ user, isUserLoading }) => (
       <Wrapper>
-        {!loading && (
+        {!isUserLoading && (
           <div>
             <ListPage userId={user.id} />
             <NewPartyLink />

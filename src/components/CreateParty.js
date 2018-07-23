@@ -63,21 +63,9 @@ class CreateParty extends React.Component {
           placeholder="Location"
           onChange={e => this.setState({ location: e.target.value })}
         />
-        <input
-          value={this.state.imageUrl}
-          placeholder="Image Url"
-          onChange={e => this.setState({ imageUrl: e.target.value })}
-        />
-        {this.state.imageUrl
-          && <img src={this.state.imageUrl} alt="" className="w-100 mv3" />
-        }
-        {this.state.location && this.state.imageUrl
-          && (
-          <button type="submit" onClick={this.handleSubmit}>
-            Create
-          </button>
-          )
-        }
+        <button type="submit" onClick={this.handleSubmit}>
+          Create
+        </button>
       </div>
     );
   }

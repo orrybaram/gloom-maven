@@ -1,23 +1,14 @@
 import React from 'react';
-import { graphql, Query } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { withRouter, Route } from 'react-router-dom';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
+import Header from './Header';
 import LoginPage from './LoginPage';
 import CreateParty from './CreateParty';
 import Dashboard from './Dashboard';
 import WithCurrentUser from './WithCurrentUser';
 import PartyDetailPage from './PartyDetailPage';
-
-const GET_CURRENT_USER = gql`
-  query User($userId: ID!) {
-    User(id: $userId) {
-      id
-      name
-      email
-    }
-  }
-`;
 
 class App extends React.Component {
   static propTypes = {
@@ -33,19 +24,15 @@ class App extends React.Component {
     }).isRequired,
   }
 
-  logout = () => {
-    // remove token from local storage and reload page to reset apollo client
-    localStorage.removeItem('graphcoolToken');
-    window.location.reload();
-  }
-
   isLoggedIn = () => (
     this.props.loggedInUserQuery.loggedInUser
     && this.props.loggedInUserQuery.loggedInUser.id !== null
   )
 
   render() {
-    if (this.props.loggedInUserQuery.loading) {
+    const { loggedInUserQuery } = this.props;
+
+    if (loggedInUserQuery.loading) {
       return (
         <div>
           Loading
@@ -58,17 +45,9 @@ class App extends React.Component {
     }
 
     return (
-      <WithCurrentUser userId={this.props.loggedInUserQuery.loggedInUser.id}>
+      <WithCurrentUser userId={loggedInUserQuery.loggedInUser.id}>
         <div>
-          <div>
-            <button
-              className="dib bg-red white pa3 pointer dim"
-              onClick={this.logout}
-              type="button"
-            >
-              Logout
-            </button>
-          </div>
+          <Header />
 
           <Route path="/parties/:id" component={PartyDetailPage} />
           <Route path="/create" component={CreateParty} />

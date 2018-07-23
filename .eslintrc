@@ -10,6 +10,7 @@
   "rules": {
     "react/jsx-filename-extension": "off",
     "react/destructuring-assignment": "off",
-    "react/prefer-stateless-function": "off"
+    "react/prefer-stateless-function": "off",
+    "react/jsx-one-expression-per-line": "off"
   }
 }

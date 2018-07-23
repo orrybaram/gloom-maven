@@ -28,7 +28,7 @@ export default class WithCurrentUser extends React.Component {
         variables={{ userId: this.props.userId }}
       >
         {({ data, error, loading }) => (
-          <CurrentUserContext.Provider value={{ user: data.User, error, loading }}>
+          <CurrentUserContext.Provider value={{ user: data.User, error, isUserLoading: loading }}>
             {this.props.children}
           </CurrentUserContext.Provider>
         )}
