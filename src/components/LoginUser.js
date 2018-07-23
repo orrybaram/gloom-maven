@@ -34,10 +34,8 @@ class CreateLogin extends React.Component {
   render() {
     if (this.props.loggedInUserQuery.loading) {
       return (
-        <div className="w-100 pa4 flex justify-center">
-          <div>
-            Loading
-          </div>
+        <div>
+          Loading
         </div>
       );
     }
@@ -52,13 +50,11 @@ class CreateLogin extends React.Component {
       <div className="w-100 pa4 flex justify-center">
         <div style={{ maxWidth: 400 }} className="">
           <input
-            className="w-100 pa3 mv2"
             value={this.state.email}
             placeholder="Email"
             onChange={e => this.setState({ email: e.target.value })}
           />
           <input
-            className="w-100 pa3 mv2"
             type="password"
             value={this.state.password}
             placeholder="Password"
@@ -67,7 +63,7 @@ class CreateLogin extends React.Component {
 
           {this.state.email && this.state.password
           && (
-          <button type="submit" className="pa3 bg-black-10 bn dim ttu pointer" onClick={this.authenticateUser}>
+          <button type="submit" onClick={this.authenticateUser}>
             Log in
           </button>
           )

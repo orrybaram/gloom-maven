@@ -22,9 +22,9 @@ class ListPage extends React.Component {
     }
 
     return (
-      <div className="w-100 flex justify-center">
+      <div>
         Your Parties:
-        <div className="w-100" style={{ maxWidth: 400 }}>
+        <div>
           {this.props.allPartiesQuery.allParties.map(party => (
             <Party key={party.id} party={party} />
           ))}

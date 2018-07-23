@@ -26,10 +26,8 @@ class PartyDetailPage extends React.Component {
   render() {
     if (this.props.partyQuery.loading) {
       return (
-        <div className="flex w-100 h-100 items-center justify-center pt7">
-          <div>
-            Loading
-          </div>
+        <div>
+          Loading
         </div>
       );
     }

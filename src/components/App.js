@@ -4,9 +4,8 @@ import { withRouter, Route } from 'react-router-dom';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import LoginPage from './LoginPage';
-import ListPage from './ListPage';
 import CreateParty from './CreateParty';
-import NewPartyLink from './NewPartyLink';
+import Dashboard from './Dashboard';
 import PartyDetailPage from './PartyDetailPage';
 
 class App extends React.Component {
@@ -51,7 +50,7 @@ class App extends React.Component {
         <span>
           {this.props.loggedInUserQuery.loggedInUser.id}
         </span>
-        <div className="pv3">
+        <div>
           <button
             className="dib bg-red white pa3 pointer dim"
             onClick={this.logout}
@@ -62,16 +61,12 @@ class App extends React.Component {
         </div>
 
         <Route path="/parties/:id" component={PartyDetailPage} />
-
         <Route path="/create" component={CreateParty} />
         <Route
           exact
           path={this.props.match.url}
           render={() => (
-            <div>
-              <ListPage userId={this.props.loggedInUserQuery.loggedInUser.id} />
-              <NewPartyLink />
-            </div>
+            <Dashboard userId={this.props.loggedInUserQuery.loggedInUser.id} />
           )}
         />
       </div>

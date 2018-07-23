@@ -9,7 +9,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import LoginUser from './components/LoginUser';
 import CreateUser from './components/CreateUser';
 import App from './components/App';
-import 'tachyons';
 
 const httpLink = createHttpLink({ uri: 'https://api.graph.cool/simple/v1/cjjvqpd6s0ciz014477v6eyhv' });
 

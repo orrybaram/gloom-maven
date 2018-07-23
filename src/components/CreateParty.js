@@ -52,37 +52,32 @@ class CreateParty extends React.Component {
     }
 
     return (
-      <div className="w-100 pa4 flex justify-center">
-        <div style={{ maxWidth: 400 }} className="">
-          <input
-            className="w-100 pa3 mv2"
-            value={this.state.name}
-            placeholder="Name"
-            onChange={e => this.setState({ name: e.target.value })}
-          />
-          <input
-            className="w-100 pa3 mv2"
-            value={this.state.location}
-            placeholder="Location"
-            onChange={e => this.setState({ location: e.target.value })}
-          />
-          <input
-            className="w-100 pa3 mv2"
-            value={this.state.imageUrl}
-            placeholder="Image Url"
-            onChange={e => this.setState({ imageUrl: e.target.value })}
-          />
-          {this.state.imageUrl
-            && <img src={this.state.imageUrl} alt="" className="w-100 mv3" />
-          }
-          {this.state.location && this.state.imageUrl
-            && (
-            <button className="pa3 bg-black-10 bn dim ttu pointer" type="submit" onClick={this.handleSubmit}>
-              Create
-            </button>
-            )
-          }
-        </div>
+      <div>
+        <input
+          value={this.state.name}
+          placeholder="Name"
+          onChange={e => this.setState({ name: e.target.value })}
+        />
+        <input
+          value={this.state.location}
+          placeholder="Location"
+          onChange={e => this.setState({ location: e.target.value })}
+        />
+        <input
+          value={this.state.imageUrl}
+          placeholder="Image Url"
+          onChange={e => this.setState({ imageUrl: e.target.value })}
+        />
+        {this.state.imageUrl
+          && <img src={this.state.imageUrl} alt="" className="w-100 mv3" />
+        }
+        {this.state.location && this.state.imageUrl
+          && (
+          <button type="submit" onClick={this.handleSubmit}>
+            Create
+          </button>
+          )
+        }
       </div>
     );
   }
