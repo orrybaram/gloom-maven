@@ -255,7 +255,7 @@ class PartyDetailPage extends React.Component {
                           placeholder="Location"
                           onChange={e => this.setState({ location: e.target.value })}
                         />
-                        <input
+                        <textarea
                           value={this.state.notes}
                           placeholder="Notes"
                           onChange={e => this.setState({ notes: e.target.value })}
@@ -265,7 +265,7 @@ class PartyDetailPage extends React.Component {
                           placeholder="Reputation"
                           onChange={e => this.setState({ reputation: e.target.value })}
                         />
-                        <input
+                        <textarea
                           value={this.state.achievements}
                           placeholder="Achievements"
                           onChange={e => this.setState({ achievements: e.target.value })}

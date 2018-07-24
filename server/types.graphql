@@ -1,52 +1,55 @@
 type User @model {
-  # Required system field:
   id: ID! @isUnique # read-only (managed by Graphcool)
-
-  # Optional system fields (remove if not needed):
   createdAt: DateTime! # read-only (managed by Graphcool)
   updatedAt: DateTime! # read-only (managed by Graphcool)
 
-  name: String
   email: String @isUnique
-  password: String
-
   joinedParties: [Party!]! @relation(name: "UserJoinedParties")
+  name: String
   ownedParties: [Party!]! @relation(name: "UserOwnedParties")
+  password: String
+  characters: [Character!]! @relation(name: "UserCharacters")
 }
 
 type Party @model {
-  # Required system field:
   id: ID! @isUnique # read-only (managed by Graphcool)
-
-  # Optional system fields (remove if not needed):
   createdAt: DateTime! # read-only (managed by Graphcool)
   updatedAt: DateTime! # read-only (managed by Graphcool)
 
-  name: String!
-  reputation: Int @defaultValue(value: 0)
-  location: String @defaultValue(value: "Gloomhaven")
-  notes: String
   achievements: String
-  imageUrl: String
-
   admin: User! @relation(name: "UserOwnedParties")
+  characters: [Character!]! @relation(name: "PartyCharacter")
+  imageUrl: String
+  location: String @defaultValue(value: "Gloomhaven")
   members: [User!]! @relation(name: "UserJoinedParties")
+  name: String!
+  notes: String
+  reputation: Int @defaultValue(value: 0)
 }
 
+type Character @model {
+  id: ID! @isUnique # read-only (managed by Graphcool)
+  createdAt: DateTime! # read-only (managed by Graphcool)
+  updatedAt: DateTime! # read-only (managed by Graphcool)
 
+  characterClass: CharacterClass! @relation(name: "CharacterOnCharacterClass")
+  gold: Int @defaultValue(value: 30)
+  items: String
+  level: Int @defaultValue(value: 1)
+  name: String
+  party: Party! @relation(name: "PartyCharacter")
+  perkFragments: Int @defaultValue(value: 0)
+  perks: String
+  xp: Int @defaultValue(value: 0)
+  user: User! @relation(name: "UserCharacters") @rename(oldName: "users")
+}
 
+type CharacterClass @model {
+  id: ID! @isUnique # read-only (managed by Graphcool)
+  createdAt: DateTime! # read-only (managed by Graphcool)
+  updatedAt: DateTime! # read-only (managed by Graphcool)
 
-# added by email-password template: (please uncomment)
-# type User @model {
-#   # Required system field:
-#   id: ID! @isUnique # read-only (managed by Graphcool)
-# 
-#   # Optional system fields (remove if not needed):
-#   createdAt: DateTime! # read-only (managed by Graphcool)
-#   updatedAt: DateTime! # read-only (managed by Graphcool)
-# 
-#   email: String! @isUnique
-#   password: String!
-# }
-# 
-
+  characters: [Character!]! @relation(name: "CharacterOnCharacterClass")
+  className: String
+  information: String
+}
