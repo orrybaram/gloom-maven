@@ -23,10 +23,27 @@ const DELETE_PARTY_MUTATION = gql`
 `;
 
 const UPDATE_PARTY_MUTATION = gql`
-  mutation UpdatePartyMutation($id: ID!, $location: String, $name: String, $membersIds: [ID!]) {
-    updateParty(id: $id, name: $name, location: $location, membersIds: $membersIds) {
-      name
+  mutation UpdatePartyMutation(
+    $id: ID!,
+    $achievements: String,
+    $location: String,
+    $name: String,
+    $notes: String,
+    $reputation: Int,
+  ) {
+    updateParty(
+      id: $id,
+      achievements: $achievements,
+      location: $location,
+      name: $name,
+      notes: $notes,
+      reputation: $reputation,
+    ) {
+      achievements
       location
+      name
+      notes
+      reputation
     }
   }
 `;
@@ -47,8 +64,11 @@ const PARTY_QUERY = gql`
   query partyQuery($id: ID!) {
     Party(id: $id) {
       id
-      name
+      achievements
       location
+      name
+      notes
+      reputation
       members {
         id
         email
@@ -87,6 +107,9 @@ class PartyDetailPage extends React.Component {
   state = {
     name: '',
     location: '',
+    achievements: '',
+    notes: '',
+    reputation: 0,
     members: [],
     tempAddMemberEmail: '',
   };
@@ -96,6 +119,9 @@ class PartyDetailPage extends React.Component {
       this.setState({
         name: newProps.partyQuery.Party.name,
         location: newProps.partyQuery.Party.location,
+        notes: newProps.partyQuery.Party.notes,
+        achievements: newProps.partyQuery.Party.achievements,
+        reputation: newProps.partyQuery.Party.reputation,
         members: [...newProps.partyQuery.Party.members],
       });
     }
@@ -109,12 +135,18 @@ class PartyDetailPage extends React.Component {
       return;
     }
 
-    const { location, name } = this.state;
+    const { location, name, notes, achievements, reputation } = this.state;
     const adminId = userId;
 
     await this.props.updatePartyMutation({
       variables: {
-        id: this.partyId, name, location, adminId,
+        id: this.partyId,
+        name,
+        location,
+        adminId,
+        notes,
+        achievements,
+        reputation: Number(reputation),
       },
     });
 
@@ -188,13 +220,30 @@ class PartyDetailPage extends React.Component {
                     {Party.name}
                   </h1>
                   <h2>{Party.location}</h2>
+
                   <div>
                     admin:
                     {Party.admin.name}
                   </div>
 
+                  <div>
+                    notes:
+                    {Party.notes}
+                  </div>
+
+                  <div>
+                    reputation:
+                    {Party.reputation}
+                  </div>
+
+                  <div>
+                    achievements:
+                    {Party.achievements}
+                  </div>
+
                   {this.isCurrentUserAdmin(user.id) && (
                     <div>
+                      <h3>Admin:</h3>
                       <form onSubmit={this.onSubmitEditForm(user.id)}>
                         <input
                           value={this.state.name}
@@ -206,6 +255,22 @@ class PartyDetailPage extends React.Component {
                           placeholder="Location"
                           onChange={e => this.setState({ location: e.target.value })}
                         />
+                        <input
+                          value={this.state.notes}
+                          placeholder="Notes"
+                          onChange={e => this.setState({ notes: e.target.value })}
+                        />
+                        <input
+                          value={this.state.reputation}
+                          placeholder="Reputation"
+                          onChange={e => this.setState({ reputation: e.target.value })}
+                        />
+                        <input
+                          value={this.state.achievements}
+                          placeholder="Achievements"
+                          onChange={e => this.setState({ achievements: e.target.value })}
+                        />
+
                         <button type="submit">
                           Update
                         </button>
