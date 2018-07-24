@@ -23,7 +23,9 @@ class CreateParty extends React.Component {
     location: 'Gloomhaven',
   }
 
-  handleSubmit = async () => {
+  handleSubmit = async (e) => {
+    e.preventDefault();
+
     // redirect if no user is logged in
     if (!this.props.loggedInUserQuery.loggedInUser) {
       console.warn('only logged in users can create new parties');
@@ -33,12 +35,12 @@ class CreateParty extends React.Component {
     const { location, imageUrl, name } = this.state;
     const adminId = this.props.loggedInUserQuery.loggedInUser.id;
 
-    await this.props.createPartyMutation({
+    const { data: { createParty: { id } } } = await this.props.createPartyMutation({
       variables: {
         name, location, imageUrl, adminId,
       },
     });
-    this.props.history.replace('/');
+    this.props.history.replace(`/parties/${id}`);
   }
 
   render() {
@@ -52,19 +54,23 @@ class CreateParty extends React.Component {
 
     return (
       <div>
-        <input
-          value={this.state.name}
-          placeholder="Name"
-          onChange={e => this.setState({ name: e.target.value })}
-        />
-        <input
-          value={this.state.location}
-          placeholder="Location"
-          onChange={e => this.setState({ location: e.target.value })}
-        />
-        <button type="submit" onClick={this.handleSubmit}>
-          Create
-        </button>
+        <form onSubmit={this.handleSubmit}>
+          <input
+            value={this.state.name}
+            placeholder="Name"
+            onChange={e => this.setState({ name: e.target.value })}
+          />
+          <input
+            value={this.state.location}
+            placeholder="Location"
+            onChange={e => this.setState({ location: e.target.value })}
+          />
+
+          <button type="submit">
+            Create
+          </button>
+        </form>
+
       </div>
     );
   }
