@@ -1,10 +1,66 @@
 import React from 'react';
-import { graphql, compose } from 'react-apollo';
+import { ApolloConsumer, graphql, compose } from 'react-apollo';
 import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
 import { CurrentUserContext } from './WithCurrentUser';
+
+const FIND_USER_QUERY = gql`
+  query findUserQuery($email: String!) {
+    User(email: $email) {
+      id
+    }
+  }
+`;
+
+const DELETE_PARTY_MUTATION = gql`
+  mutation DeletePartyMutation($id: ID!) {
+    deleteParty(id: $id) {
+      id
+    }
+  }
+`;
+
+const UPDATE_PARTY_MUTATION = gql`
+  mutation UpdatePartyMutation($id: ID!, $location: String, $name: String, $membersIds: [ID!]) {
+    updateParty(id: $id, name: $name, location: $location, membersIds: $membersIds) {
+      name
+      location
+    }
+  }
+`;
+
+const UPDATE_PARTY_MEMBERS_MUTATION = gql`
+  mutation UpdatePartyMemberMutation($joinedPartiesPartyId: ID!, $membersUserId: ID!) {
+    addToUserJoinedParties(joinedPartiesPartyId: $joinedPartiesPartyId, membersUserId: $membersUserId) {
+      membersUser {
+        id
+        email
+        name
+      }
+    }
+  }
+`;
+
+const PARTY_QUERY = gql`
+  query partyQuery($id: ID!) {
+    Party(id: $id) {
+      id
+      name
+      location
+      members {
+        id
+        email
+        name
+      }
+      admin {
+        name
+        id
+      }
+    }
+  }
+`;
 
 class PartyDetailPage extends React.Component {
   static propTypes = {
@@ -13,6 +69,7 @@ class PartyDetailPage extends React.Component {
     }).isRequired,
     deletePartyMutation: PropTypes.func.isRequired,
     updatePartyMutation: PropTypes.func.isRequired,
+    updatePartyMembersMutation: PropTypes.func.isRequired,
     partyQuery: PropTypes.shape({
       refetch: PropTypes.func,
       loading: PropTypes.bool,
@@ -30,6 +87,8 @@ class PartyDetailPage extends React.Component {
   state = {
     name: '',
     location: '',
+    members: [],
+    tempAddMemberEmail: '',
   };
 
   componentWillReceiveProps(newProps) {
@@ -37,22 +96,12 @@ class PartyDetailPage extends React.Component {
       this.setState({
         name: newProps.partyQuery.Party.name,
         location: newProps.partyQuery.Party.location,
+        members: [...newProps.partyQuery.Party.members],
       });
     }
   }
 
-  get partyId() {
-    return this.props.partyQuery.Party.id;
-  }
-
-  isCurrentUserAdmin = userId => this.props.partyQuery.Party.admin.id === userId;
-
-  handleDelete = async () => {
-    await this.props.deletePartyMutation({ variables: { id: this.partyId } });
-    this.props.history.replace('/');
-  }
-
-  handleSubmitEditForm = userId => async (e) => {
+  onSubmitEditForm = userId => async (e) => {
     e.preventDefault();
 
     if (!this.isCurrentUserAdmin(userId)) {
@@ -72,6 +121,46 @@ class PartyDetailPage extends React.Component {
     this.props.partyQuery.refetch();
   }
 
+  onSubmitAddMemberForm = apolloClient => async (e) => {
+    e.preventDefault();
+
+    const { data } = await apolloClient.query({
+      query: FIND_USER_QUERY,
+      variables: { email: this.state.tempAddMemberEmail },
+    });
+
+    if (!data.User) {
+      return alert(`no user found with email address: ${this.state.tempAddMemberEmail}`);
+    }
+
+    const {
+      data: {
+        addToUserJoinedParties: {
+          membersUser,
+        },
+      },
+    } = await this.props.updatePartyMembersMutation({
+      variables: {
+        joinedPartiesPartyId: this.partyId,
+        membersUserId: data.User.id,
+      },
+    });
+
+    this.state.members.push(membersUser);
+    return this.setState({ tempAddMemberEmail: '' });
+  }
+
+  get partyId() {
+    return this.props.partyQuery.Party.id;
+  }
+
+  isCurrentUserAdmin = userId => this.props.partyQuery.Party.admin.id === userId;
+
+  handleDelete = async () => {
+    await this.props.deletePartyMutation({ variables: { id: this.partyId } });
+    this.props.history.replace('/');
+  }
+
   render() {
     if (this.props.partyQuery.loading) {
       return (
@@ -84,87 +173,77 @@ class PartyDetailPage extends React.Component {
     const { Party } = this.props.partyQuery;
 
     return (
-      <CurrentUserContext.Consumer>
-        {({ user, isUserLoading }) => {
-          if (isUserLoading) {
-            return <span>Loading...</span>;
-          }
+      <ApolloConsumer>
+        {client => (
+          <CurrentUserContext.Consumer>
+            {({ user, isUserLoading }) => {
+              if (isUserLoading) {
+                return <span>Loading...</span>;
+              }
 
-          return (
-            <div>
-              <Link to="/">{'<-'} Back</Link>
-              <h1>
-                {Party.name}
-              </h1>
-              <h2>{Party.location}</h2>
-              <div>
-                admin:
-                {Party.admin.name}
-              </div>
-
-              {this.isCurrentUserAdmin(user.id) && (
+              return (
                 <div>
-                  <form onSubmit={this.handleSubmitEditForm(user.id)}>
-                    <input
-                      value={this.state.name}
-                      placeholder="Name"
-                      onChange={e => this.setState({ name: e.target.value })}
-                    />
-                    <input
-                      value={this.state.location}
-                      placeholder="Location"
-                      onChange={e => this.setState({ location: e.target.value })}
-                    />
-                    <button type="submit">
-                      Update
-                    </button>
-                  </form>
+                  <Link to="/">{'<-'} Back</Link>
+                  <h1>
+                    {Party.name}
+                  </h1>
+                  <h2>{Party.location}</h2>
+                  <div>
+                    admin:
+                    {Party.admin.name}
+                  </div>
 
-                  <hr />
+                  {this.isCurrentUserAdmin(user.id) && (
+                    <div>
+                      <form onSubmit={this.onSubmitEditForm(user.id)}>
+                        <input
+                          value={this.state.name}
+                          placeholder="Name"
+                          onChange={e => this.setState({ name: e.target.value })}
+                        />
+                        <input
+                          value={this.state.location}
+                          placeholder="Location"
+                          onChange={e => this.setState({ location: e.target.value })}
+                        />
+                        <button type="submit">
+                          Update
+                        </button>
+                      </form>
 
-                  <button type="button" onClick={this.handleDelete}>
-                    delete
-                  </button>
+                      <hr />
+
+                      <ul>
+                        {this.state.members.map(member => (
+                          <li key={member.email}><strong>{member.name}</strong> {member.email}</li>
+                        ))}
+                      </ul>
+
+                      <form onSubmit={this.onSubmitAddMemberForm(client)}>
+                        <input
+                          placeholder="Add member by email"
+                          value={this.state.tempAddMemberEmail}
+                          onChange={e => this.setState({ tempAddMemberEmail: e.target.value })}
+                        />
+                        <button type="submit">Add</button>
+                      </form>
+
+                      <hr />
+
+                      <button type="button" onClick={this.handleDelete}>
+                        delete
+                      </button>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          );
-        }}
-      </CurrentUserContext.Consumer>
+              );
+            }}
+          </CurrentUserContext.Consumer>
+        )}
+      </ApolloConsumer>
     );
   }
 }
-
-const DELETE_PARTY_MUTATION = gql`
-  mutation DeletePartyMutation($id: ID!) {
-    deleteParty(id: $id) {
-      id
-    }
-  }
-`;
-
-const UPDATE_PARTY_MUTATION = gql`
-  mutation UpdatePartyMutation($id: ID!, $location: String, $name: String) {
-    updateParty(id: $id, name: $name, location: $location) {
-      name
-      location
-    }
-  }
-`;
-
-const PARTY_QUERY = gql`
-  query partyQuery($id: ID!) {
-    Party(id: $id) {
-      id
-      name
-      location
-      admin {
-        name
-        id
-      }
-    }
-  }
-`;
 
 const DetailPageWithGraphQL = compose(
   graphql(PARTY_QUERY, {
@@ -182,6 +261,9 @@ const DetailPageWithGraphQL = compose(
   }),
   graphql(UPDATE_PARTY_MUTATION, {
     name: 'updatePartyMutation',
+  }),
+  graphql(UPDATE_PARTY_MEMBERS_MUTATION, {
+    name: 'updatePartyMembersMutation',
   }),
 )(PartyDetailPage);
 
