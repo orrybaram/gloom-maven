@@ -9,8 +9,9 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import LoginUser from './components/LoginUser';
 import CreateUser from './components/CreateUser';
 import App from './components/App';
+import { graphcoolEndpoint } from './config';
 
-const httpLink = createHttpLink({ uri: 'https://api.graph.cool/simple/v1/cjjvqpd6s0ciz014477v6eyhv' });
+const httpLink = createHttpLink({ uri: graphcoolEndpoint });
 
 const middlewareLink = new ApolloLink((operation, forward) => {
   const token = localStorage.getItem('graphcoolToken');

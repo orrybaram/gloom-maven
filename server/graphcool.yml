@@ -24,21 +24,21 @@ functions:
 
   signup:
     type: resolver
-    schema: src/email-password/signup.graphql
+    schema: ./templates/email-password/signup.graphql
     handler:
-      code: src/email-password/signup.ts
+      code: ./templates/email-password/signup.ts
 
   authenticate:
     type: resolver
-    schema: src/email-password/authenticate.graphql
+    schema: ./templates/email-password/authenticate.graphql
     handler:
-      code: src/email-password/authenticate.ts
+      code: ./templates/email-password/authenticate.ts
 
   loggedInUser:
     type: resolver
-    schema: src/email-password/loggedInUser.graphql
+    schema: ./templates/email-password/loggedInUser.graphql
     handler:
-      code: src/email-password/loggedInUser.ts
+      code: ./templates/email-password/loggedInUser.ts
 
 
 # Model/Relation permissions are used to limit the API access

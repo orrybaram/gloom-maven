@@ -7,8 +7,12 @@ node_modules
 
 # testing
 coverage
+
 # production
 build
+
+# secret keys
+config.js
 
 # misc
 .DS_Store
@@ -17,3 +21,6 @@ npm-debug.log
 #IDE
 .idea/*
 *.swp
+
+.envrc
+docker-compose.yml
