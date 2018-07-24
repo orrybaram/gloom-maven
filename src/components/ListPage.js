@@ -29,11 +29,11 @@ class ListPage extends React.Component {
     return (
       <div>
         Your Parties:
-        <div>
+        <ul>
           {this.props.allPartiesQuery.allParties.map(party => (
-            <Party key={party.id} party={party} />
+            <li key={party.id}><Party party={party} /></li>
           ))}
-        </div>
+        </ul>
       </div>
     );
   }
