@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 import LoginPage from './LoginPage';
 import CreateParty from './CreateParty';
+import CreateCharacter from './CreateCharacter';
+import CharacterDetailPage from './CharacterDetailPage';
 import Dashboard from './Dashboard';
 import WithCurrentUser from './WithCurrentUser';
 import PartyDetailPage from './PartyDetailPage';
@@ -53,8 +55,8 @@ class App extends React.Component {
           <Switch>
             <Route path="/party/create" component={CreateParty} />
             <Route path="/party/:id" component={PartyDetailPage} />
-            <Route path="/character/:id" component={PartyDetailPage} />
-            <Route path="/character/create" component={CreateParty} />
+            <Route path="/character/create" component={CreateCharacter} />
+            <Route path="/character/:id" component={CharacterDetailPage} />
             <Route component={Dashboard} />
           </Switch>
         </div>

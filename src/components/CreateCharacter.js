@@ -32,12 +32,11 @@ class CreateCharacter extends React.Component {
       return;
     }
 
-    const { location, imageUrl, name } = this.state;
-    const adminId = this.props.loggedInUserQuery.loggedInUser.id;
+    const { name } = this.state;
 
     const { data: { createCharacter: { id } } } = await this.props.createCharacterMutation({
       variables: {
-        name, location, imageUrl, adminId,
+        name,
       },
     });
     this.props.history.replace(`/characters/${id}`);
@@ -61,9 +60,9 @@ class CreateCharacter extends React.Component {
             onChange={e => this.setState({ name: e.target.value })}
           />
           <input
-            value={this.state.location}
-            placeholder="Location"
-            onChange={e => this.setState({ location: e.target.value })}
+            value={this.state.characterClass}
+            placeholder="Character Class"
+            onChange={e => this.setState({ characterClass: e.target.value })}
           />
 
           <button type="submit">
@@ -78,14 +77,12 @@ class CreateCharacter extends React.Component {
 
 const CREATE_CHARACTER_MUTATION = gql`
   mutation CreateCharacterMutation (
-    $adminId: ID!,
     $name: String!,
-    $location: String!,
+    $characterClass: String!,
   ) {
     createCharacter(
-      adminId: $adminId,
       name: $name,
-      location: $location,
+      characterClass: $characterClass,
     ) {
       id
     }

@@ -72,11 +72,16 @@ class CharacterDetailPage extends React.Component {
   };
 
   componentWillReceiveProps(newProps) {
+    if (!newProps.characterQuery.Character) {
+      return this.props.history.replace('/');
+    }
+
     if (newProps !== this.props && !newProps.characterQuery.loading) {
-      this.setState({
+      return this.setState({
         name: newProps.characterQuery.Character.name,
       });
     }
+    return null;
   }
 
   onSubmitEditForm = userId => async (e) => {

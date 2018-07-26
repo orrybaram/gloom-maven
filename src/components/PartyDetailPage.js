@@ -117,8 +117,11 @@ class PartyDetailPage extends React.Component {
   };
 
   componentWillReceiveProps(newProps) {
+    if (!newProps.partyQuery.Party) {
+      return this.props.history.replace('/');
+    }
     if (newProps !== this.props && !newProps.partyQuery.loading) {
-      this.setState({
+      return this.setState({
         name: newProps.partyQuery.Party.name,
         location: newProps.partyQuery.Party.location,
         notes: newProps.partyQuery.Party.notes,
@@ -127,6 +130,7 @@ class PartyDetailPage extends React.Component {
         members: [...newProps.partyQuery.Party.members],
       });
     }
+    return null;
   }
 
   onSubmitEditForm = userId => async (e) => {
