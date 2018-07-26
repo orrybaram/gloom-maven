@@ -5,7 +5,7 @@ type User @model {
 
   email: String @isUnique
   joinedParties: [Party!]! @relation(name: "UserJoinedParties")
-  name: String
+  name: String @isUnique
   ownedParties: [Party!]! @relation(name: "UserOwnedParties")
   password: String
   characters: [Character!]! @relation(name: "UserCharacters")
