@@ -30,7 +30,8 @@ class CreateUser extends React.Component {
     };
   }
 
-  signupUser = async () => {
+  signupUser = async (e) => {
+    e.preventDefault();
     const { email, password, name } = this.state;
 
     try {
@@ -43,6 +44,8 @@ class CreateUser extends React.Component {
       this.props.history.replace('/');
     }
   }
+
+  isButtonDisabled = () => !(this.state.name && this.state.email && this.state.password)
 
   render() {
     if (this.props.loggedInUserQuery.loading) {
@@ -63,12 +66,17 @@ class CreateUser extends React.Component {
     }
 
     return (
-      <div className="w-100 pa4 flex justify-center">
-        <div style={{ maxWidth: 400 }} className="">
+      <div>
+        <form>
           <input
             value={this.state.email}
             placeholder="Email"
             onChange={e => this.setState({ email: e.target.value })}
+          />
+          <input
+            value={this.state.name}
+            placeholder="Name"
+            onChange={e => this.setState({ name: e.target.value })}
           />
           <input
             type="password"
@@ -76,18 +84,15 @@ class CreateUser extends React.Component {
             placeholder="Password"
             onChange={e => this.setState({ password: e.target.value })}
           />
-          <input
-            value={this.state.name}
-            placeholder="Name"
-            onChange={e => this.setState({ name: e.target.value })}
-          />
+          <button
+            type="submit"
+            onClick={this.signupUser}
+            disabled={this.isButtonDisabled()}
+          >
+            Sign up
+          </button>
 
-          {this.state.name && this.state.email && this.state.password && (
-            <button type="submit" onClick={this.signupUser}>
-              Sign up
-            </button>
-          )}
-        </div>
+        </form>
       </div>
     );
   }
