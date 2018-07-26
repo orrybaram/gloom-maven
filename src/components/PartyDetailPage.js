@@ -77,6 +77,7 @@ const PARTY_QUERY = gql`
       admin {
         name
         id
+        email
       }
     }
   }
@@ -98,6 +99,7 @@ class PartyDetailPage extends React.Component {
         name: PropTypes.string,
         admin: PropTypes.shape({
           id: PropTypes.string,
+          email: PropTypes.string,
         }),
         location: PropTypes.string,
       }),
@@ -223,7 +225,7 @@ class PartyDetailPage extends React.Component {
 
                   <div>
                     admin:
-                    {Party.admin.name}
+                    {Party.admin.name} {Party.admin.email}
                   </div>
 
                   <div>
@@ -332,5 +334,4 @@ const DetailPageWithGraphQL = compose(
   }),
 )(PartyDetailPage);
 
-// const DetailPageWithDelete = graphql(DELETE_PARTY_MUTATION)(DetailPageWithGraphQL);
 export default withRouter(DetailPageWithGraphQL);

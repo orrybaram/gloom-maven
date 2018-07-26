@@ -40,7 +40,7 @@ class CreateParty extends React.Component {
         name, location, imageUrl, adminId,
       },
     });
-    this.props.history.replace(`/parties/${id}`);
+    this.props.history.replace(`/party/${id}`);
   }
 
   render() {

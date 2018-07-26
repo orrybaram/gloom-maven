@@ -12,7 +12,7 @@ export default class Party extends React.Component {
 
   render() {
     return (
-      <Link to={`/parties/${this.props.party.id}`}>
+      <Link to={`/party/${this.props.party.id}`}>
         {this.props.party.name}
       </Link>
     );

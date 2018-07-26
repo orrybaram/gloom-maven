@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import { withRouter, Route } from 'react-router-dom';
+import { withRouter, Route, Switch } from 'react-router-dom';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import Header from './Header';
@@ -50,9 +50,13 @@ class App extends React.Component {
         <div>
           <Header />
 
-          <Route path="/parties/:id" component={PartyDetailPage} />
-          <Route path="/create" component={CreateParty} />
-          <Route exact path={this.props.match.url} component={Dashboard} />
+          <Switch>
+            <Route path="/party/create" component={CreateParty} />
+            <Route path="/party/:id" component={PartyDetailPage} />
+            <Route path="/character/:id" component={PartyDetailPage} />
+            <Route path="/character/create" component={CreateParty} />
+            <Route component={Dashboard} />
+          </Switch>
         </div>
       </WithCurrentUser>
     );
