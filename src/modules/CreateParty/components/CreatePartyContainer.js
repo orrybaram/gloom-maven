@@ -2,7 +2,11 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { graphql, compose } from 'react-apollo';
 import PropTypes from 'prop-types';
-import { CREATE_PARTY_MUTATION } from '../queries';
+import {
+  CREATE_PARTY_MUTATION,
+  CREATE_CHARACTER_MUTATION,
+  CHARACTER_CLASS_QUERY,
+} from '../queries';
 import { LOGGED_IN_USER_QUERY } from '../../../shared/queries';
 import CreateParty from './CreateParty';
 
@@ -18,6 +22,8 @@ class CreatePartyContainer extends React.Component {
       replace: PropTypes.func,
     }).isRequired,
     createPartyMutation: PropTypes.func.isRequired,
+    createCharacterMutation: PropTypes.func.isRequired,
+    characterClassQuery: PropTypes.func.isRequired,
   }
 
   state = {
@@ -43,12 +49,24 @@ class CreatePartyContainer extends React.Component {
     const { location, imageUrl, name } = this.state;
     const adminId = this.props.loggedInUserQuery.loggedInUser.id;
 
-    const { data: { createParty: { id } } } = await this.props.createPartyMutation({
+    const { data: { createParty: { id: partyId } } } = await this.props.createPartyMutation({
       variables: {
         name, location, imageUrl, adminId,
       },
     });
-    this.props.history.replace(`/party/${id}`);
+
+    const characterClassIds = this.props.characterClassQuery.allCharacterClasses;
+
+    characterClassIds.forEach(({ id: characterClassId }) => {
+      this.props.createCharacterMutation({
+        variables: {
+          partyId,
+          characterClassId,
+        },
+      });
+    });
+
+    this.props.history.replace(`/party/${partyId}`);
   }
 
   render() {
@@ -66,6 +84,8 @@ class CreatePartyContainer extends React.Component {
 
 export default compose(
   graphql(CREATE_PARTY_MUTATION, { name: 'createPartyMutation' }),
+  graphql(CREATE_CHARACTER_MUTATION, { name: 'createCharacterMutation' }),
+  graphql(CHARACTER_CLASS_QUERY, { name: 'characterClassQuery' }),
   graphql(LOGGED_IN_USER_QUERY, {
     name: 'loggedInUserQuery',
     options: { fetchPolicy: 'network-only' },

@@ -79,6 +79,17 @@ const PARTY_QUERY = gql`
         id
         email
       }
+      characters {
+        id
+        characterClass {
+          className
+          information
+          race
+        }
+        name
+        gold
+        xp
+      }
     }
   }
 `;
@@ -245,6 +256,15 @@ class PartyDetailPage extends React.Component {
                   <div>
                     achievements:
                     {Party.achievements}
+                  </div>
+
+                  <div>
+                    characters:
+                    {Party.characters.map(character => (
+                      <div>
+                        {character.characterClass.race} - {character.characterClass.className}
+                      </div>
+                    ))}
                   </div>
 
                   {this.isCurrentUserAdmin(user.id) && (

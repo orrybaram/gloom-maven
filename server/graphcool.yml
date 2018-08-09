@@ -48,13 +48,13 @@ functions:
 # https://docs-next.graph.cool/reference/auth/authorization/overview-iegoo0heez
 permissions:
 
-  # Only members of the party can read party
+  # Types ------------------------------------------------------------------------
+
 - operation: Party.read
   authenticated: true
   # TODO: make an invite/join system so only members can view party
   # query: ./permissions/readParty.graphql
 
-  # Only authenticated users can create parties
 - operation: Party.create
   authenticated: true
 
@@ -68,12 +68,32 @@ permissions:
   authenticated: true
   query: ./permissions/updateOrDeleteParty.graphql
 
+
+- operation: Character.create
+  authenticated: true
+- operation: Character.read
+  authenticated: true
+- operation: Character.update
+  authenticated: true
+
+
+- operation: CharacterClass.create
+  authenticated: true
+- operation: CharacterClass.update
+  authenticated: true
+- operation: CharacterClass.read
+  authenticated: true
+
+
   # Everyone can read the id, name and email fields of users
 - operation: User.read
   fields:
     - id
     - name
     - email
+
+  # Relations ------------------------------------------------------------------------
+
   # Only authenticated users can create an owned relation between a user and a party
 - operation: UserOwnedParties.connect
   authenticated: true
@@ -82,6 +102,13 @@ permissions:
 - operation: UserJoinedParties.connect
   authenticated: true
 
+  # Only authenticated users can create a joined relation between a character and a party
+- operation: PartyCharacter.connect
+  authenticated: true
+
+  # Only authenticated users can create a joined relation between a character and a character class
+- operation: CharacterOnCharacterClass.connect
+  authenticated: true
 
 # Your root tokens used for functions to get full access to the API
 # Read more here:
