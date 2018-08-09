@@ -2,9 +2,11 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { graphql, compose } from 'react-apollo';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
+import { CREATE_PARTY_MUTATION } from '../queries';
+import { LOGGED_IN_USER_QUERY } from '../../../shared/queries';
+import CreateParty from './CreateParty';
 
-class CreateParty extends React.Component {
+class CreatePartyContainer extends React.Component {
   static propTypes = {
     loggedInUserQuery: PropTypes.shape({
       loggedInUser: PropTypes.shape({
@@ -21,6 +23,12 @@ class CreateParty extends React.Component {
   state = {
     name: '',
     location: 'Gloomhaven',
+  }
+
+  onInputChange = fieldName => (e) => {
+    this.setState({
+      [fieldName]: e.target.value,
+    });
   }
 
   handleSubmit = async (e) => {
@@ -44,61 +52,17 @@ class CreateParty extends React.Component {
   }
 
   render() {
-    if (this.props.loggedInUserQuery.loading) {
-      return (
-        <div>
-          Loading
-        </div>
-      );
-    }
-
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            value={this.state.name}
-            placeholder="Name"
-            onChange={e => this.setState({ name: e.target.value })}
-          />
-          <input
-            value={this.state.location}
-            placeholder="Location"
-            onChange={e => this.setState({ location: e.target.value })}
-          />
-
-          <button type="submit">
-            Create
-          </button>
-        </form>
-
-      </div>
+      <CreateParty
+        isLoading={this.props.loggedInUserQuery.loading}
+        handleSubmit={this.handleSubmit}
+        name={this.state.name}
+        location={this.state.location}
+        onInputChange={this.onInputChange}
+      />
     );
   }
 }
-
-const CREATE_PARTY_MUTATION = gql`
-  mutation CreatePartyMutation (
-    $adminId: ID!,
-    $name: String!,
-    $location: String!,
-  ) {
-    createParty(
-      adminId: $adminId,
-      name: $name,
-      location: $location,
-    ) {
-      id
-    }
-  }
-`;
-
-const LOGGED_IN_USER_QUERY = gql`
-  query LoggedInUserQuery {
-    loggedInUser {
-      id
-    }
-  }
-`;
 
 export default compose(
   graphql(CREATE_PARTY_MUTATION, { name: 'createPartyMutation' }),
@@ -106,4 +70,4 @@ export default compose(
     name: 'loggedInUserQuery',
     options: { fetchPolicy: 'network-only' },
   }),
-)(withRouter(CreateParty));
+)(withRouter(CreatePartyContainer));

@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import Header from './Header';
 import LoginPage from './LoginPage';
-import CreateParty from './CreateParty';
+import CreateParty from '../modules/CreateParty';
 import CreateCharacter from './CreateCharacter';
 import CharacterDetailPage from './CharacterDetailPage';
 import Dashboard from './Dashboard';
