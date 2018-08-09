@@ -6,11 +6,10 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 import LoginPage from './LoginPage';
 import CreateParty from '../modules/CreateParty';
-import CreateCharacter from './CreateCharacter';
 import CharacterDetailPage from './CharacterDetailPage';
 import Dashboard from './Dashboard';
 import WithCurrentUser from './WithCurrentUser';
-import PartyDetailPage from './PartyDetailPage';
+import PartyDetail from '../modules/PartyDetail';
 
 class App extends React.Component {
   static propTypes = {
@@ -21,9 +20,6 @@ class App extends React.Component {
       }),
       refetch: PropTypes.func,
       loading: PropTypes.bool,
-    }).isRequired,
-    match: PropTypes.shape({
-      url: PropTypes.string,
     }).isRequired,
   }
 
@@ -54,8 +50,7 @@ class App extends React.Component {
 
           <Switch>
             <Route path="/party/create" component={CreateParty} />
-            <Route path="/party/:id" component={PartyDetailPage} />
-            <Route path="/character/create" component={CreateCharacter} />
+            <Route path="/party/:id" component={PartyDetail} />
             <Route path="/character/:id" component={CharacterDetailPage} />
             <Route component={Dashboard} />
           </Switch>

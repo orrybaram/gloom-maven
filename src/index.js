@@ -6,8 +6,8 @@ import { ApolloProvider } from 'react-apollo';
 import { createHttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import LoginUser from './components/LoginUser';
-import CreateUser from './components/CreateUser';
+import Login from './modules/Login';
+import Signup from './modules/Signup';
 import App from './components/App';
 import { graphcoolEndpoint } from './config';
 
@@ -36,8 +36,8 @@ ReactDOM.render((
     <Router>
       <div>
         <Route path="/" component={App} />
-        <Route path="/login" component={LoginUser} />
-        <Route path="/signup" component={CreateUser} />
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={Signup} />
       </div>
     </Router>
   </ApolloProvider>
