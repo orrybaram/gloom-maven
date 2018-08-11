@@ -5,6 +5,7 @@ import Loading from '../../components/Loading';
 
 export default class PartyDetailPage extends React.Component {
   static propTypes = {
+    isDeleting: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isCurrentUserAdmin: PropTypes.bool.isRequired,
     Party: PropTypes.shape({
@@ -50,6 +51,7 @@ export default class PartyDetailPage extends React.Component {
       editMemberFormData,
       editPartyFormData,
       isCurrentUserAdmin,
+      isDeleting,
       isLoading,
       handleDelete,
       onInputChange,
@@ -154,7 +156,7 @@ export default class PartyDetailPage extends React.Component {
             <hr />
 
             <button type="button" onClick={handleDelete}>
-              delete
+              {isDeleting ? 'Deleting...' : 'Delete'}
             </button>
           </div>
         )}

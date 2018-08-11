@@ -26,6 +26,7 @@ class CreateLogin extends React.Component {
   state = {
     email: '',
     password: '',
+    isLoggingIn: false,
   }
 
   onInputChange = fieldName => e => (
@@ -37,6 +38,10 @@ class CreateLogin extends React.Component {
   authenticateUser = async (e) => {
     e.preventDefault();
     const { email, password } = this.state;
+
+    this.setState({
+      isLoggingIn: true,
+    });
 
     try {
       const response = await this.props.authenticateUserMutation({
@@ -63,6 +68,7 @@ class CreateLogin extends React.Component {
     return (
       <Login
         isLoading={this.props.loggedInUserQuery.loading}
+        isLoggingIn={this.state.isLoggingIn}
         email={this.state.email}
         password={this.state.password}
         onInputChange={this.onInputChange}

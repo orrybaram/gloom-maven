@@ -6,6 +6,7 @@ import Loading from '../../components/Loading';
 export default class Login extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
+    isLoggingIn: PropTypes.bool.isRequired,
     email: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
     onInputChange: PropTypes.func.isRequired,
@@ -33,7 +34,7 @@ export default class Login extends React.Component {
         />
 
         <button type="submit">
-          Log in
+          {this.props.isLoggingIn ? 'Logging in...': 'Log in'}
         </button>
       </form>
     );

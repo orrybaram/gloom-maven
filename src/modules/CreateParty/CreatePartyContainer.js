@@ -24,6 +24,7 @@ class CreatePartyContainer extends React.Component {
   state = {
     name: '',
     location: 'Gloomhaven',
+    isCreating: false,
   }
 
   onInputChange = fieldName => (e) => {
@@ -42,6 +43,10 @@ class CreatePartyContainer extends React.Component {
       console.warn('only logged in users can create new parties');
       return;
     }
+
+    this.setState({
+      isCreating: true,
+    });
 
     const adminId = currentUser.id;
     const { data: { createParty: { id: partyId } } } = await this.props.createPartyMutation({
@@ -71,6 +76,7 @@ class CreatePartyContainer extends React.Component {
             name={this.state.name}
             location={this.state.location}
             onInputChange={this.onInputChange}
+            isCreating={this.state.isCreating}
           />
         )}
       </Query>

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 export default class CreatePartyPage extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
+    isCreating: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
     onInputChange: PropTypes.func.isRequired,
@@ -25,7 +26,7 @@ export default class CreatePartyPage extends React.Component {
           />
 
           <button type="submit">
-            Create
+            {this.props.isCreating ? 'Creating...' : 'Create'}
           </button>
         </form>
 

@@ -18,6 +18,7 @@ import {
   withDialoguePropTypes,
 } from '../../lib/propTypes';
 import withDialogue from '../../lib/withDialogue';
+import Loading from '../../components/Loading';
 
 class PartyDetailContainer extends React.Component {
   static propTypes = {
@@ -57,6 +58,7 @@ class PartyDetailContainer extends React.Component {
       email: '',
     },
     members: [],
+    isDeleting: false,
   };
 
   componentWillReceiveProps(newProps) {
@@ -157,10 +159,11 @@ class PartyDetailContainer extends React.Component {
 
   handleDelete = async () => {
     const confirmation = this.props.confirm('are you sure you wanna do this?');
-
-    console.log(confirmation);
-
     if (!confirmation) return;
+
+    this.setState({
+      isDeleting: true,
+    });
 
     // delete all characters associated with party
     await Promise.all(this.props.partyQuery.Party.characters.map(({ id }) => (
@@ -179,7 +182,7 @@ class PartyDetailContainer extends React.Component {
       <ApolloConsumer>
         {(client) => {
           if (isUserLoading || this.props.partyQuery.loading) {
-            return <span>Loading...</span>;
+            return <Loading />;
           }
 
           return (
@@ -188,6 +191,7 @@ class PartyDetailContainer extends React.Component {
               editPartyFormData={this.state.partyFormData}
               handleDelete={this.handleDelete}
               isCurrentUserAdmin={this.isCurrentUserAdmin(currentUser.id)}
+              isDeleting={this.state.isDeleting}
               isLoading={isUserLoading || this.props.partyQuery.loading}
               members={this.state.members}
               onInputChange={this.onInputChange}
