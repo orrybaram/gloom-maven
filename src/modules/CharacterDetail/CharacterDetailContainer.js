@@ -4,11 +4,11 @@ import { withRouter } from 'react-router-dom';
 import CharacterDetailPage from './CharacterDetailPage';
 import Loading from '../../components/Loading';
 import { CHARACTER_QUERY } from './queries';
-import { withRouterPropsTypes } from '../../lib/propTypes';
+import { withRouterPropTypes } from '../../lib/propTypes';
 
 class CharacterDetailContainer extends React.Component {
   static propTypes = {
-    ...withRouterPropsTypes,
+    ...withRouterPropTypes,
   }
 
   render() {

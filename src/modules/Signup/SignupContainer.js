@@ -6,6 +6,8 @@ import gql from 'graphql-tag';
 import errorMessageSanitizer from '../../lib/errorMessageSanitizer';
 import { LOGGED_IN_USER_QUERY } from '../../lib/queries';
 import Signup from './Signup';
+import withDialogue from '../../lib/withDialogue';
+import { withDialoguePropTypes } from '../../lib/propTypes';
 
 class CreateUser extends React.Component {
   static propTypes = {
@@ -21,6 +23,7 @@ class CreateUser extends React.Component {
       replace: PropTypes.func,
     }).isRequired,
     signupUserMutation: PropTypes.func.isRequired,
+    ...withDialoguePropTypes,
   }
 
   constructor() {
@@ -49,7 +52,7 @@ class CreateUser extends React.Component {
       await this.props.loggedInUserQuery.refetch();
       this.props.history.replace('/');
     } catch (err) {
-      alert(errorMessageSanitizer(err.message));
+      this.props.alert(errorMessageSanitizer(err.message));
     }
   }
 
@@ -92,4 +95,6 @@ export default compose(
     name: 'loggedInUserQuery',
     options: { fetchPolicy: 'network-only' },
   }),
-)(withRouter(CreateUser));
+  withDialogue,
+  withRouter,
+)(CreateUser);

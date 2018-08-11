@@ -75,6 +75,8 @@ permissions:
   authenticated: true
 - operation: Character.update
   authenticated: true
+- operation: Character.delete
+  authenticated: true
 
 
 - operation: CharacterClass.create

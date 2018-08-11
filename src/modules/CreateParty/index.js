@@ -1,1 +1,1 @@
-export { default } from './components/CreatePartyContainer';
+export { default } from './CreatePartyContainer';

@@ -6,7 +6,8 @@ import errorMessageSanitizer from '../../lib/errorMessageSanitizer';
 import { LOGGED_IN_USER_QUERY } from '../../lib/queries';
 import Login from './Login';
 import { AUTHENTICATE_USER_MUTATION } from './queries';
-import { withRouterPropsTypes } from '../../lib/propTypes';
+import { withRouterPropTypes, withDialoguePropTypes } from '../../lib/propTypes';
+import withDialogue from '../../lib/withDialogue';
 
 class CreateLogin extends React.Component {
   static propTypes = {
@@ -18,7 +19,8 @@ class CreateLogin extends React.Component {
       refetch: PropTypes.func,
     }).isRequired,
     authenticateUserMutation: PropTypes.func.isRequired,
-    ...withRouterPropsTypes,
+    ...withRouterPropTypes,
+    ...withDialoguePropTypes,
   }
 
   state = {
@@ -45,7 +47,7 @@ class CreateLogin extends React.Component {
       await this.props.loggedInUserQuery.refetch();
       this.props.history.replace('/');
     } catch (err) {
-      alert(errorMessageSanitizer(err.message));
+      this.props.alert(errorMessageSanitizer(err.message));
     }
   }
 
@@ -77,4 +79,5 @@ export default compose(
     options: { fetchPolicy: 'network-only' },
   }),
   withRouter,
+  withDialogue,
 )(CreateLogin);

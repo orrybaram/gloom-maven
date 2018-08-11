@@ -10,7 +10,7 @@ export const withCurrentUserPropTypes = {
   refetchCurrentUser: PropTypes.func.isRequired,
 };
 
-export const withRouterPropsTypes = {
+export const withRouterPropTypes = {
   history: PropTypes.shape({
     replace: PropTypes.func,
   }).isRequired,
@@ -19,4 +19,10 @@ export const withRouterPropsTypes = {
       id: PropTypes.string,
     }),
   }).isRequired,
+};
+
+export const withDialoguePropTypes = {
+  confirm: PropTypes.func.isRequired,
+  alert: PropTypes.func.isRequired,
+  prompt: PropTypes.func.isRequired,
 };

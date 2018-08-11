@@ -1,15 +1,15 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { graphql, compose } from 'react-apollo';
+import { Query, graphql, compose } from 'react-apollo';
 import PropTypes from 'prop-types';
 import {
   CREATE_PARTY_MUTATION,
   CREATE_CHARACTER_MUTATION,
   CHARACTER_CLASS_QUERY,
-} from '../queries';
+} from './queries';
 import CreatePartyPage from './CreatePartyPage';
-import withCurrentUser from '../../../lib/withCurrentUser';
-import { withRouterPropsTypes } from '../../../lib/propTypes';
+import withCurrentUser from '../../lib/withCurrentUser';
+import { withRouterPropTypes } from '../../lib/propTypes';
 
 class CreatePartyContainer extends React.Component {
   static propTypes = {
@@ -18,8 +18,7 @@ class CreatePartyContainer extends React.Component {
     }).isRequired,
     createPartyMutation: PropTypes.func.isRequired,
     createCharacterMutation: PropTypes.func.isRequired,
-    characterClassQuery: PropTypes.func.isRequired,
-    ...withRouterPropsTypes,
+    ...withRouterPropTypes,
   }
 
   state = {
@@ -33,10 +32,10 @@ class CreatePartyContainer extends React.Component {
     });
   }
 
-  handleSubmit = async (e) => {
+  handleSubmit = characterClassIds => async (e) => {
     e.preventDefault();
-
     const { currentUser } = this.props;
+    const { location, imageUrl, name } = this.state;
 
     // redirect if no user is logged in
     if (!currentUser) {
@@ -44,37 +43,37 @@ class CreatePartyContainer extends React.Component {
       return;
     }
 
-    const { location, imageUrl, name } = this.state;
     const adminId = currentUser.id;
-
     const { data: { createParty: { id: partyId } } } = await this.props.createPartyMutation({
       variables: {
         name, location, imageUrl, adminId,
       },
     });
 
-    const characterClassIds = this.props.characterClassQuery.allCharacterClasses;
-
-    characterClassIds.forEach(({ id: characterClassId }) => {
+    await Promise.all(characterClassIds.map(({ id: characterClassId }) => (
       this.props.createCharacterMutation({
         variables: {
           partyId,
           characterClassId,
         },
-      });
-    });
+      })
+    )));
 
     this.props.history.replace(`/party/${partyId}`);
   }
 
   render() {
     return (
-      <CreatePartyPage
-        handleSubmit={this.handleSubmit}
-        name={this.state.name}
-        location={this.state.location}
-        onInputChange={this.onInputChange}
-      />
+      <Query query={CHARACTER_CLASS_QUERY}>
+        {({ data }) => (
+          <CreatePartyPage
+            handleSubmit={this.handleSubmit(data.allCharacterClasses)}
+            name={this.state.name}
+            location={this.state.location}
+            onInputChange={this.onInputChange}
+          />
+        )}
+      </Query>
     );
   }
 }
@@ -82,7 +81,6 @@ class CreatePartyContainer extends React.Component {
 export default compose(
   graphql(CREATE_PARTY_MUTATION, { name: 'createPartyMutation' }),
   graphql(CREATE_CHARACTER_MUTATION, { name: 'createCharacterMutation' }),
-  graphql(CHARACTER_CLASS_QUERY, { name: 'characterClassQuery' }),
   withRouter,
   withCurrentUser,
 )(CreatePartyContainer);

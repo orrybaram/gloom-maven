@@ -16,6 +16,14 @@ export const DELETE_PARTY_MUTATION = gql`
   }
 `;
 
+export const DELETE_CHARACTER_MUTATION = gql`
+  mutation DeleteCharacterMutation($id: ID!) {
+    deleteCharacter(id: $id) {
+      id
+    }
+  }
+`;
+
 export const UPDATE_PARTY_MUTATION = gql`
   mutation UpdatePartyMutation(
     $id: ID!,

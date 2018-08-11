@@ -5,13 +5,19 @@ import PropTypes from 'prop-types';
 import {
   FIND_USER_QUERY,
   DELETE_PARTY_MUTATION,
+  DELETE_CHARACTER_MUTATION,
   UPDATE_PARTY_MUTATION,
   UPDATE_PARTY_MEMBERS_MUTATION,
   PARTY_QUERY,
 } from './queries';
 import PartyDetailPage from './PartyDetailPage';
 import withCurrentUser from '../../lib/withCurrentUser';
-import { withCurrentUserPropTypes, withRouterPropsTypes } from '../../lib/propTypes';
+import {
+  withCurrentUserPropTypes,
+  withRouterPropTypes,
+  withDialoguePropTypes,
+} from '../../lib/propTypes';
+import withDialogue from '../../lib/withDialogue';
 
 class PartyDetailContainer extends React.Component {
   static propTypes = {
@@ -29,10 +35,14 @@ class PartyDetailContainer extends React.Component {
           email: PropTypes.string,
         }),
         location: PropTypes.string,
+        characters: PropTypes.arrayOf(PropTypes.shape({
+          id: PropTypes.string,
+        })),
       }),
     }).isRequired,
-    ...withRouterPropsTypes,
+    ...withRouterPropTypes,
     ...withCurrentUserPropTypes,
+    ...withDialoguePropTypes,
   }
 
   state = {
@@ -110,7 +120,7 @@ class PartyDetailContainer extends React.Component {
     });
 
     if (!data.User) {
-      return alert(`no user found with email address: ${this.state.memberFormData.email}`);
+      return this.props.alert(`no user found with email address: ${this.state.memberFormData.email}`);
     }
 
     const {
@@ -146,6 +156,18 @@ class PartyDetailContainer extends React.Component {
   isCurrentUserAdmin = userId => this.props.partyQuery.Party.admin.id === userId;
 
   handleDelete = async () => {
+    const confirmation = this.props.confirm('are you sure you wanna do this?');
+
+    console.log(confirmation);
+
+    if (!confirmation) return;
+
+    // delete all characters associated with party
+    await Promise.all(this.props.partyQuery.Party.characters.map(({ id }) => (
+      this.props.deleteCharacterMutation({ variables: { id } })
+    )));
+
+    // delete party
     await this.props.deletePartyMutation({ variables: { id: this.partyId } });
     this.props.history.replace('/');
   }
@@ -194,6 +216,9 @@ const DetailPageWithGraphQL = compose(
   graphql(DELETE_PARTY_MUTATION, {
     name: 'deletePartyMutation',
   }),
+  graphql(DELETE_CHARACTER_MUTATION, {
+    name: 'deleteCharacterMutation',
+  }),
   graphql(UPDATE_PARTY_MUTATION, {
     name: 'updatePartyMutation',
   }),
@@ -202,6 +227,7 @@ const DetailPageWithGraphQL = compose(
   }),
   withRouter,
   withCurrentUser,
+  withDialogue,
 )(PartyDetailContainer);
 
 export default DetailPageWithGraphQL;
