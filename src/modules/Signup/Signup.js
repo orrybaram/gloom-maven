@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Loading from '../../components/Loading';
+import Card from '../../components/Card';
+
+import * as S from './styles';
 
 export default class Signup extends React.Component {
   static propTypes = {
@@ -20,31 +23,35 @@ export default class Signup extends React.Component {
     }
 
     return (
-      <form onSubmit={this.props.onFormSubmit}>
-        <input
-          value={this.props.email}
-          type="email"
-          placeholder="Email"
-          onChange={this.props.onInputChange('email')}
-        />
-        <input
-          value={this.props.name}
-          placeholder="Name"
-          onChange={this.props.onInputChange('name')}
-        />
-        <input
-          type="password"
-          value={this.props.password}
-          placeholder="Password"
-          onChange={this.props.onInputChange('password')}
-        />
-        <button
-          type="submit"
-          disabled={this.isButtonDisabled()}
-        >
-          Sign up
-        </button>
-      </form>
+      <S.SignupPage>
+        <Card>
+          <form onSubmit={this.props.onFormSubmit}>
+            <input
+              value={this.props.email}
+              type="email"
+              placeholder="Email"
+              onChange={this.props.onInputChange('email')}
+            />
+            <input
+              value={this.props.name}
+              placeholder="Name"
+              onChange={this.props.onInputChange('name')}
+            />
+            <input
+              type="password"
+              value={this.props.password}
+              placeholder="Password"
+              onChange={this.props.onInputChange('password')}
+            />
+            <button
+              type="submit"
+              disabled={this.isButtonDisabled()}
+            >
+              Sign up
+            </button>
+          </form>
+        </Card>
+      </S.SignupPage>
     );
   }
 }

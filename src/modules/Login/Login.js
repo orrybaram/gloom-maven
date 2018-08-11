@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Loading from '../../components/Loading';
+import Card from '../../components/Card';
+
+import * as S from './styles';
 
 export default class Login extends React.Component {
   static propTypes = {
@@ -19,24 +22,28 @@ export default class Login extends React.Component {
     }
 
     return (
-      <form onSubmit={this.props.onFormSubmit}>
-        <input
-          value={this.props.email}
-          placeholder="Email"
-          type="email"
-          onChange={this.props.onInputChange('email')}
-        />
-        <input
-          type="password"
-          value={this.props.password}
-          placeholder="Password"
-          onChange={this.props.onInputChange('password')}
-        />
+      <S.LoginPage>
+        <Card>
+          <form onSubmit={this.props.onFormSubmit}>
+            <input
+              value={this.props.email}
+              placeholder="Email"
+              type="email"
+              onChange={this.props.onInputChange('email')}
+            />
+            <input
+              type="password"
+              value={this.props.password}
+              placeholder="Password"
+              onChange={this.props.onInputChange('password')}
+            />
 
-        <button type="submit">
-          {this.props.isLoggingIn ? 'Logging in...' : 'Log in'}
-        </button>
-      </form>
+            <button type="submit">
+              {this.props.isLoggingIn ? 'Logging in...' : 'Log in'}
+            </button>
+          </form>
+        </Card>
+      </S.LoginPage>
     );
   }
 }
