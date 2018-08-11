@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Loading from '../../components/Loading';
+
 export default class Login extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
@@ -12,11 +14,7 @@ export default class Login extends React.Component {
 
   render() {
     if (this.props.isLoading) {
-      return (
-        <div>
-          Loading...
-        </div>
-      );
+      return <Loading />;
     }
 
     return (

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Loading from '../../components/Loading';
 
 export default class Signup extends React.Component {
   static propTypes = {
@@ -15,11 +16,7 @@ export default class Signup extends React.Component {
 
   render() {
     if (this.props.isLoading) {
-      return (
-        <div>
-          Loading
-        </div>
-      );
+      return <Loading />;
     }
 
     return (

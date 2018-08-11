@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Loading from '../../components/Loading';
 
 export default class PartyDetailPage extends React.Component {
   static propTypes = {
@@ -58,7 +59,7 @@ export default class PartyDetailPage extends React.Component {
     } = this.props;
 
     if (isLoading) {
-      return <span>Loading...</span>;
+      return <Loading />;
     }
 
     return (
