@@ -11,13 +11,10 @@ import {
 } from './queries';
 import PartyDetailPage from './PartyDetailPage';
 import withCurrentUser from '../../lib/withCurrentUser';
-import { withCurrentUserPropTypes } from '../../shared/propTypes';
+import { withCurrentUserPropTypes, withRouterPropsTypes } from '../../lib/propTypes';
 
 class PartyDetailContainer extends React.Component {
   static propTypes = {
-    history: PropTypes.shape({
-      replace: PropTypes.func,
-    }).isRequired,
     deletePartyMutation: PropTypes.func.isRequired,
     updatePartyMutation: PropTypes.func.isRequired,
     updatePartyMembersMutation: PropTypes.func.isRequired,
@@ -34,6 +31,7 @@ class PartyDetailContainer extends React.Component {
         location: PropTypes.string,
       }),
     }).isRequired,
+    ...withRouterPropsTypes,
     ...withCurrentUserPropTypes,
   }
 

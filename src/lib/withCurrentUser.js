@@ -2,7 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 
 import Loading from '../components/Loading';
-import { LOGGED_IN_USER_QUERY, GET_CURRENT_USER } from '../shared/queries';
+import { LOGGED_IN_USER_QUERY, GET_CURRENT_USER } from './queries';
 
 export default function withCurrentUser(WrappedComponent) {
   return class extends React.Component {

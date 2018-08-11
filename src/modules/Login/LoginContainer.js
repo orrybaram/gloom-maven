@@ -3,9 +3,10 @@ import { withRouter } from 'react-router-dom';
 import { graphql, compose } from 'react-apollo';
 import PropTypes from 'prop-types';
 import errorMessageSanitizer from '../../lib/errorMessageSanitizer';
-import { LOGGED_IN_USER_QUERY } from '../../shared/queries';
+import { LOGGED_IN_USER_QUERY } from '../../lib/queries';
 import Login from './Login';
 import { AUTHENTICATE_USER_MUTATION } from './queries';
+import { withRouterPropsTypes } from '../../lib/propTypes';
 
 class CreateLogin extends React.Component {
   static propTypes = {
@@ -16,10 +17,8 @@ class CreateLogin extends React.Component {
       loading: PropTypes.bool,
       refetch: PropTypes.func,
     }).isRequired,
-    history: PropTypes.shape({
-      replace: PropTypes.func,
-    }).isRequired,
     authenticateUserMutation: PropTypes.func.isRequired,
+    ...withRouterPropsTypes,
   }
 
   state = {

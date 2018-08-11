@@ -4,7 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import errorMessageSanitizer from '../../lib/errorMessageSanitizer';
-import { LOGGED_IN_USER_QUERY } from '../../shared/queries';
+import { LOGGED_IN_USER_QUERY } from '../../lib/queries';
 import Signup from './Signup';
 
 class CreateUser extends React.Component {

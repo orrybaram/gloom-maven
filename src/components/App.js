@@ -11,7 +11,7 @@ import Header from './Header';
 import LoginPage from './LoginPage';
 import Loading from './Loading';
 
-import { LOGGED_IN_USER_QUERY } from '../shared/queries';
+import { LOGGED_IN_USER_QUERY } from '../lib/queries';
 
 class App extends React.Component {
   isLoggedIn = loggedInUser => loggedInUser && loggedInUser.id !== null;

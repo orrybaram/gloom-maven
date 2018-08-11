@@ -3,7 +3,7 @@ import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
 import PartyList from './PartyList';
 import withCurrentUser from '../../lib/withCurrentUser';
-import { withCurrentUserPropTypes } from '../../shared/propTypes';
+import { withCurrentUserPropTypes } from '../../lib/propTypes';
 
 const Wrapper = styled.div`
   background: #f1f1f1;

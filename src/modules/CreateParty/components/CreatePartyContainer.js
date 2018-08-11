@@ -9,18 +9,17 @@ import {
 } from '../queries';
 import CreatePartyPage from './CreatePartyPage';
 import withCurrentUser from '../../../lib/withCurrentUser';
+import { withRouterPropsTypes } from '../../../lib/propTypes';
 
 class CreatePartyContainer extends React.Component {
   static propTypes = {
     currentUser: PropTypes.shape({
       id: PropTypes.string,
     }).isRequired,
-    history: PropTypes.shape({
-      replace: PropTypes.func,
-    }).isRequired,
     createPartyMutation: PropTypes.func.isRequired,
     createCharacterMutation: PropTypes.func.isRequired,
     characterClassQuery: PropTypes.func.isRequired,
+    ...withRouterPropsTypes,
   }
 
   state = {

@@ -1,18 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import CharacterDetailPage from './CharacterDetailPage';
 import Loading from '../../components/Loading';
 import { CHARACTER_QUERY } from './queries';
+import { withRouterPropsTypes } from '../../lib/propTypes';
 
 class CharacterDetailContainer extends React.Component {
   static propTypes = {
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        id: PropTypes.string,
-      }),
-    }).isRequired,
+    ...withRouterPropsTypes,
   }
 
   render() {
