@@ -34,7 +34,7 @@ export default class Login extends React.Component {
         />
 
         <button type="submit">
-          {this.props.isLoggingIn ? 'Logging in...': 'Log in'}
+          {this.props.isLoggingIn ? 'Logging in...' : 'Log in'}
         </button>
       </form>
     );
