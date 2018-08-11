@@ -1,8 +1,8 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
-import Party from './Party';
+import { Link } from 'react-router-dom';
+import { ALL_PARTIES_QUERY } from './queries';
 
 class ListPage extends React.Component {
   static propTypes = {
@@ -31,32 +31,17 @@ class ListPage extends React.Component {
         Your Parties:
         <ul>
           {this.props.allPartiesQuery.allParties.map(party => (
-            <li key={party.id}><Party party={party} /></li>
+            <li key={party.id}>
+              <Link to={`/party/${party.id}`}>
+                {party.name}
+              </Link>
+            </li>
           ))}
         </ul>
       </div>
     );
   }
 }
-
-const ALL_PARTIES_QUERY = gql`
-  query AllPartiesQuery($user_id: ID!) {
-    allParties(orderBy: createdAt_DESC, filter: {
-      OR: [{
-        members_some: {
-          id: $user_id
-        }
-      }, {
-        admin: {
-          id: $user_id
-        }
-      }]
-    }) {
-      id
-      name
-    }
-  }
-`;
 
 const ListPageWithGraphQL = (
   graphql(ALL_PARTIES_QUERY, {

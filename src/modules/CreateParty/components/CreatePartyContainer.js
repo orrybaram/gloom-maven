@@ -7,16 +7,13 @@ import {
   CREATE_CHARACTER_MUTATION,
   CHARACTER_CLASS_QUERY,
 } from '../queries';
-import { LOGGED_IN_USER_QUERY } from '../../../shared/queries';
-import CreateParty from './CreateParty';
+import CreatePartyPage from './CreatePartyPage';
+import withCurrentUser from '../../../lib/withCurrentUser';
 
 class CreatePartyContainer extends React.Component {
   static propTypes = {
-    loggedInUserQuery: PropTypes.shape({
-      loggedInUser: PropTypes.shape({
-        id: PropTypes.string,
-      }),
-      loading: PropTypes.bool,
+    currentUser: PropTypes.shape({
+      id: PropTypes.string,
     }).isRequired,
     history: PropTypes.shape({
       replace: PropTypes.func,
@@ -40,14 +37,16 @@ class CreatePartyContainer extends React.Component {
   handleSubmit = async (e) => {
     e.preventDefault();
 
+    const { currentUser } = this.props;
+
     // redirect if no user is logged in
-    if (!this.props.loggedInUserQuery.loggedInUser) {
+    if (!currentUser) {
       console.warn('only logged in users can create new parties');
       return;
     }
 
     const { location, imageUrl, name } = this.state;
-    const adminId = this.props.loggedInUserQuery.loggedInUser.id;
+    const adminId = currentUser.id;
 
     const { data: { createParty: { id: partyId } } } = await this.props.createPartyMutation({
       variables: {
@@ -71,8 +70,7 @@ class CreatePartyContainer extends React.Component {
 
   render() {
     return (
-      <CreateParty
-        isLoading={this.props.loggedInUserQuery.loading}
+      <CreatePartyPage
         handleSubmit={this.handleSubmit}
         name={this.state.name}
         location={this.state.location}
@@ -86,8 +84,6 @@ export default compose(
   graphql(CREATE_PARTY_MUTATION, { name: 'createPartyMutation' }),
   graphql(CREATE_CHARACTER_MUTATION, { name: 'createCharacterMutation' }),
   graphql(CHARACTER_CLASS_QUERY, { name: 'characterClassQuery' }),
-  graphql(LOGGED_IN_USER_QUERY, {
-    name: 'loggedInUserQuery',
-    options: { fetchPolicy: 'network-only' },
-  }),
-)(withRouter(CreatePartyContainer));
+  withRouter,
+  withCurrentUser,
+)(CreatePartyContainer);

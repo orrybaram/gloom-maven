@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CurrentUserContext } from './WithCurrentUser';
+import Loading from './Loading';
+import withCurrentUser from '../lib/withCurrentUser';
+import { withCurrentUserPropTypes } from '../shared/propTypes';
 
 const logout = () => {
   // remove token from local storage and reload page to reset apollo client
@@ -8,27 +10,25 @@ const logout = () => {
   window.location.reload();
 };
 
-export default () => (
-  <CurrentUserContext>
-    {({ user, isUserLoading }) => (
-      <header>
-        <Link to="/">Home</Link>
-        {isUserLoading
-          ? <span>Loading...</span>
-          : (
-            <div>
-              Welcome, {user.name}
-              <button
-
-                onClick={logout}
-                type="button"
-              >
-                Logout
-              </button>
-            </div>
-          )
-        }
-      </header>
-    )}
-  </CurrentUserContext>
+const Header = ({ currentUser, isUserLoading }) => (
+  <header>
+    <Link to="/">Home</Link>
+    {isUserLoading
+      ? <Loading />
+      : (
+        <div>
+          Welcome, {currentUser.name}
+          <button
+            onClick={logout}
+            type="button"
+          >
+            Logout
+          </button>
+        </div>
+      )
+    }
+  </header>
 );
+
+Header.propTypes = withCurrentUserPropTypes;
+export default withCurrentUser(Header);

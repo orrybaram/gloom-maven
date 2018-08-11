@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class CreateParty extends React.Component {
+export default class CreatePartyPage extends React.Component {
   static propTypes = {
-    isLoading: PropTypes.bool.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
@@ -11,14 +10,6 @@ export default class CreateParty extends React.Component {
   }
 
   render() {
-    if (this.props.isLoading) {
-      return (
-        <div>
-          Loading
-        </div>
-      );
-    }
-
     return (
       <div>
         <form onSubmit={this.props.handleSubmit}>

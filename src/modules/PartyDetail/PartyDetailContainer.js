@@ -9,8 +9,9 @@ import {
   UPDATE_PARTY_MEMBERS_MUTATION,
   PARTY_QUERY,
 } from './queries';
-import { CurrentUserContext } from '../../components/WithCurrentUser';
 import PartyDetailPage from './PartyDetailPage';
+import withCurrentUser from '../../lib/withCurrentUser';
+import { withCurrentUserPropTypes } from '../../shared/propTypes';
 
 class PartyDetailContainer extends React.Component {
   static propTypes = {
@@ -33,6 +34,7 @@ class PartyDetailContainer extends React.Component {
         location: PropTypes.string,
       }),
     }).isRequired,
+    ...withCurrentUserPropTypes,
   }
 
   state = {
@@ -151,32 +153,30 @@ class PartyDetailContainer extends React.Component {
   }
 
   render() {
+    const { currentUser, isUserLoading } = this.props;
+
     return (
       <ApolloConsumer>
-        {client => (
-          <CurrentUserContext.Consumer>
-            {({ user, isUserLoading }) => {
-              if (isUserLoading || this.props.partyQuery.loading) {
-                return <span>Loading...</span>;
-              }
+        {(client) => {
+          if (isUserLoading || this.props.partyQuery.loading) {
+            return <span>Loading...</span>;
+          }
 
-              return (
-                <PartyDetailPage
-                  editMemberFormData={this.state.memberFormData}
-                  editPartyFormData={this.state.partyFormData}
-                  handleDelete={this.handleDelete}
-                  isCurrentUserAdmin={this.isCurrentUserAdmin(user.id)}
-                  isLoading={isUserLoading || this.props.partyQuery.loading}
-                  members={this.state.members}
-                  onInputChange={this.onInputChange}
-                  onSubmitAddMemberForm={this.onSubmitAddMemberForm(client)}
-                  onSubmitEditForm={this.onSubmitEditForm(user.id)}
-                  Party={this.props.partyQuery.Party}
-                />
-              );
-            }}
-          </CurrentUserContext.Consumer>
-        )}
+          return (
+            <PartyDetailPage
+              editMemberFormData={this.state.memberFormData}
+              editPartyFormData={this.state.partyFormData}
+              handleDelete={this.handleDelete}
+              isCurrentUserAdmin={this.isCurrentUserAdmin(currentUser.id)}
+              isLoading={isUserLoading || this.props.partyQuery.loading}
+              members={this.state.members}
+              onInputChange={this.onInputChange}
+              onSubmitAddMemberForm={this.onSubmitAddMemberForm(client)}
+              onSubmitEditForm={this.onSubmitEditForm(currentUser.id)}
+              Party={this.props.partyQuery.Party}
+            />
+          );
+        }}
       </ApolloConsumer>
     );
   }
@@ -202,6 +202,8 @@ const DetailPageWithGraphQL = compose(
   graphql(UPDATE_PARTY_MEMBERS_MUTATION, {
     name: 'updatePartyMembersMutation',
   }),
+  withRouter,
+  withCurrentUser,
 )(PartyDetailContainer);
 
-export default withRouter(DetailPageWithGraphQL);
+export default DetailPageWithGraphQL;

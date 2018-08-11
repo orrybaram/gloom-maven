@@ -1,74 +1,54 @@
-import React from 'react';
-import { graphql } from 'react-apollo';
+import React, { Fragment } from 'react';
+import { Query } from 'react-apollo';
 import { withRouter, Route, Switch } from 'react-router-dom';
-import gql from 'graphql-tag';
-import PropTypes from 'prop-types';
-import Header from './Header';
-import LoginPage from './LoginPage';
+
 import CreateParty from '../modules/CreateParty';
-import CharacterDetailPage from './CharacterDetailPage';
-import Dashboard from './Dashboard';
-import WithCurrentUser from './WithCurrentUser';
+import CharacterDetail from '../modules/CharacterDetail';
+import Dashboard from '../modules/Dashboard';
 import PartyDetail from '../modules/PartyDetail';
 
-class App extends React.Component {
-  static propTypes = {
-    loggedInUserQuery: PropTypes.shape({
-      loggedInUser: PropTypes.shape({
-        id: PropTypes.string,
-        name: PropTypes.string,
-      }),
-      refetch: PropTypes.func,
-      loading: PropTypes.bool,
-    }).isRequired,
-  }
+import Header from './Header';
+import LoginPage from './LoginPage';
+import Loading from './Loading';
 
-  isLoggedIn = () => (
-    this.props.loggedInUserQuery.loggedInUser
-    && this.props.loggedInUserQuery.loggedInUser.id !== null
-  )
+import { LOGGED_IN_USER_QUERY } from '../shared/queries';
+
+class App extends React.Component {
+  isLoggedIn = loggedInUser => loggedInUser && loggedInUser.id !== null;
 
   render() {
-    const { loggedInUserQuery } = this.props;
-
-    if (loggedInUserQuery.loading) {
-      return (
-        <div>
-          Loading
-        </div>
-      );
-    }
-
-    if (!this.isLoggedIn()) {
-      return <LoginPage />;
-    }
-
     return (
-      <WithCurrentUser userId={loggedInUserQuery.loggedInUser.id}>
-        <div>
-          <Header />
+      <Query
+        query={LOGGED_IN_USER_QUERY}
+        fetchPolicy="network-only"
+      >
+        {({ data, loading }) => {
+          if (loading) {
+            return (
+              <Loading />
+            );
+          }
 
-          <Switch>
-            <Route path="/party/create" component={CreateParty} />
-            <Route path="/party/:id" component={PartyDetail} />
-            <Route path="/character/:id" component={CharacterDetailPage} />
-            <Route component={Dashboard} />
-          </Switch>
-        </div>
-      </WithCurrentUser>
+          if (!this.isLoggedIn(data.loggedInUser)) {
+            return <LoginPage />;
+          }
+
+          return (
+            <Fragment>
+              <Header />
+
+              <Switch>
+                <Route path="/party/create" component={CreateParty} />
+                <Route path="/party/:id" component={PartyDetail} />
+                <Route path="/character/:id" component={CharacterDetail} />
+                <Route component={Dashboard} />
+              </Switch>
+            </Fragment>
+          );
+        }}
+      </Query>
     );
   }
 }
 
-const LOGGED_IN_USER_QUERY = gql`
-  query LoggedInUserQuery {
-    loggedInUser {
-      id
-    }
-  }
-`;
-
-export default graphql(LOGGED_IN_USER_QUERY, {
-  name: 'loggedInUserQuery',
-  options: { fetchPolicy: 'network-only' },
-})(withRouter(App));
+export default withRouter(App);

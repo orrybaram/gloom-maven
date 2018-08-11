@@ -2,10 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { graphql, compose } from 'react-apollo';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
 import errorMessageSanitizer from '../../lib/errorMessageSanitizer';
 import { LOGGED_IN_USER_QUERY } from '../../shared/queries';
 import Login from './Login';
+import { AUTHENTICATE_USER_MUTATION } from './queries';
 
 class CreateLogin extends React.Component {
   static propTypes = {
@@ -71,19 +71,11 @@ class CreateLogin extends React.Component {
   }
 }
 
-const AUTHENTICATE_USER_MUTATION = gql`
-  mutation AuthenticateUserMutation ($email: String!, $password: String!) {
-    authenticateUser(email: $email, password: $password) {
-      token
-    }
-  }
-`;
-
-
 export default compose(
   graphql(AUTHENTICATE_USER_MUTATION, { name: 'authenticateUserMutation' }),
   graphql(LOGGED_IN_USER_QUERY, {
     name: 'loggedInUserQuery',
     options: { fetchPolicy: 'network-only' },
   }),
-)(withRouter(CreateLogin));
+  withRouter,
+)(CreateLogin);
