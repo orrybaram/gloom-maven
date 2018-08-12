@@ -38,9 +38,13 @@ const Root = styled.div`
   height: 100%;
 `;
 
+const basename = process.env.NODE_ENV === 'development'
+  ? ''
+  : 'gloom-maven';
+
 ReactDOM.render((
   <ApolloProvider client={client}>
-    <Router>
+    <Router basename={basename}>
       <Root>
         <Route path="/" component={App} />
       </Root>
