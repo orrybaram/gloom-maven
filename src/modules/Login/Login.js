@@ -1,8 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Box } from 'grid-styled/emotion';
 
-import Loading from '../../components/Loading';
-import Card from '../../components/Card';
+import {
+  Button,
+  Card,
+  Input,
+  Loading,
+  Label,
+  LabelText,
+} from '../../components';
+
 
 import * as S from './styles';
 
@@ -23,26 +31,38 @@ export default class Login extends React.Component {
 
     return (
       <S.LoginPage>
-        <Card>
-          <form onSubmit={this.props.onFormSubmit}>
-            <input
-              value={this.props.email}
-              placeholder="Email"
-              type="email"
-              onChange={this.props.onInputChange('email')}
-            />
-            <input
-              type="password"
-              value={this.props.password}
-              placeholder="Password"
-              onChange={this.props.onInputChange('password')}
-            />
+        <Box width={[1, 1 / 2]} mx={4} css="max-width: 400px;">
+          <Card>
+            <form onSubmit={this.props.onFormSubmit}>
+              <Box mb={3}>
+                <Label>
+                  <LabelText>Email</LabelText>
+                  <Input
+                    value={this.props.email}
+                    placeholder="Email"
+                    type="email"
+                    onChange={this.props.onInputChange('email')}
+                  />
+                </Label>
+              </Box>
+              <Box mb={3}>
+                <Label>
+                  <LabelText>Password</LabelText>
+                  <Input
+                    type="password"
+                    value={this.props.password}
+                    placeholder="Password"
+                    onChange={this.props.onInputChange('password')}
+                  />
+                </Label>
+              </Box>
 
-            <button type="submit">
-              {this.props.isLoggingIn ? 'Logging in...' : 'Log in'}
-            </button>
-          </form>
-        </Card>
+              <Button type="submit">
+                {this.props.isLoggingIn ? 'Logging in...' : 'Log in'}
+              </Button>
+            </form>
+          </Card>
+        </Box>
       </S.LoginPage>
     );
   }

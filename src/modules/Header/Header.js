@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Logo } from '../../components';
+
 import HeaderUser from './HeaderUser';
 import HeaderLoginLinks from './HeaderLoginLinks';
-
 import * as S from './styles';
 
 const propTypes = {
@@ -12,7 +12,7 @@ const propTypes = {
 
 const Header = ({ isLoggedIn }) => (
   <S.Header>
-    <Link to="/">Home</Link>
+    <Logo />
 
     {isLoggedIn
       ? <HeaderUser />

@@ -12,6 +12,7 @@
     "react/destructuring-assignment": "off",
     "react/prefer-stateless-function": "off",
     "react/jsx-one-expression-per-line": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "jsx-a11y/label-has-for": "off"
   }
 }

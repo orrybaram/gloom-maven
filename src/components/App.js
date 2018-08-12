@@ -22,16 +22,15 @@ class App extends React.Component {
     return (
       <Query
         query={LOGGED_IN_USER_QUERY}
-        fetchPolicy="network-only"
       >
         {({ data, loading }) => {
-          const isLoggedIn = this.isLoggedIn(data.loggedInUser);
-
           if (loading) {
             return (
               <Loading />
             );
           }
+
+          const isLoggedIn = this.isLoggedIn(data.loggedInUser);
 
           return (
             <Fragment>

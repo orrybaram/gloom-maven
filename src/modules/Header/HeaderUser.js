@@ -1,5 +1,5 @@
 import React from 'react';
-import { withCurrentUserPropTypes } from '../../lib/propTypes';
+import { withCurrentUserPropTypes, withCurrentUserDefaultProps } from '../../lib/propTypes';
 import withCurrentUser from '../../lib/withCurrentUser';
 
 const logout = () => {
@@ -25,4 +25,5 @@ const HeaderUser = ({ currentUser, isUserLoading }) => (
 );
 
 HeaderUser.propTypes = withCurrentUserPropTypes;
+HeaderUser.defaultPropTypes = withCurrentUserDefaultProps;
 export default withCurrentUser(HeaderUser);

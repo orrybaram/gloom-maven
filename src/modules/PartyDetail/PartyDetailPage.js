@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Loading from '../../components/Loading';
+import * as S from './styles';
 
 export default class PartyDetailPage extends React.Component {
   static propTypes = {
@@ -30,7 +31,7 @@ export default class PartyDetailPage extends React.Component {
       name: PropTypes.string,
       notes: PropTypes.string,
       location: PropTypes.string,
-      reputation: PropTypes.string,
+      reputation: PropTypes.number,
       achievements: PropTypes.string,
     }).isRequired,
     editMemberFormData: PropTypes.shape({
@@ -92,44 +93,60 @@ export default class PartyDetailPage extends React.Component {
           {Party.achievements}
         </div>
 
-        <div>
-          characters:
-          {Party.characters.map(character => (
-            <div>
-              <Link to={`/character/${character.id}`}>{character.characterClass.race} - {character.characterClass.className}</Link>
-            </div>
-          ))}
-        </div>
+
+        <h4>characters</h4>
+        {Party.characters.map(character => (
+          <div key={character.id}>
+            <Link to={`/character/${character.id}`}>
+              {character.characterClass.race} - {character.characterClass.className}
+            </Link>
+          </div>
+        ))}
 
         {isCurrentUserAdmin && (
           <div>
             <h3>Admin:</h3>
             <form onSubmit={onSubmitEditForm}>
-              <input
-                value={editPartyFormData.name}
-                placeholder="Name"
-                onChange={onInputChange({ formName: 'party', fieldName: 'name' })}
-              />
-              <input
-                value={editPartyFormData.location}
-                placeholder="Location"
-                onChange={onInputChange({ formName: 'party', fieldName: 'location' })}
-              />
-              <textarea
-                value={editPartyFormData.notes}
-                placeholder="Notes"
-                onChange={onInputChange({ formName: 'party', fieldName: 'notes' })}
-              />
-              <input
-                value={editPartyFormData.reputation}
-                placeholder="Reputation"
-                onChange={onInputChange({ formName: 'party', fieldName: 'reputation' })}
-              />
-              <textarea
-                value={editPartyFormData.achievements}
-                placeholder="Achievements"
-                onChange={onInputChange({ formName: 'party', fieldName: 'achievements' })}
-              />
+              <S.Label>
+                <S.LabelText>Name</S.LabelText>
+                <input
+                  value={editPartyFormData.name}
+                  placeholder="Name"
+                  onChange={onInputChange({ formName: 'party', fieldName: 'name' })}
+                />
+              </S.Label>
+              <S.Label>
+                <S.LabelText>Location</S.LabelText>
+                <input
+                  value={editPartyFormData.location}
+                  placeholder="Location"
+                  onChange={onInputChange({ formName: 'party', fieldName: 'location' })}
+                />
+              </S.Label>
+              <S.Label>
+                <S.LabelText>Notes</S.LabelText>
+                <textarea
+                  value={editPartyFormData.notes}
+                  placeholder="Notes"
+                  onChange={onInputChange({ formName: 'party', fieldName: 'notes' })}
+                />
+              </S.Label>
+              <S.Label>
+                <S.LabelText>Reputation</S.LabelText>
+                <input
+                  value={editPartyFormData.reputation}
+                  placeholder="Reputation"
+                  onChange={onInputChange({ formName: 'party', fieldName: 'reputation' })}
+                />
+              </S.Label>
+              <S.Label>
+                <S.LabelText>Achievements</S.LabelText>
+                <textarea
+                  value={editPartyFormData.achievements}
+                  placeholder="Achievements"
+                  onChange={onInputChange({ formName: 'party', fieldName: 'achievements' })}
+                />
+              </S.Label>
 
               <button type="submit">
                 Update
@@ -138,6 +155,7 @@ export default class PartyDetailPage extends React.Component {
 
             <hr />
 
+            <h4>Party Members</h4>
             <ul>
               {this.props.members.map(member => (
                 <li key={member.email}><strong>{member.name}</strong> {member.email}</li>

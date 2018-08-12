@@ -9,7 +9,7 @@ import Signup from './Signup';
 import withDialogue from '../../lib/withDialogue';
 import { withDialoguePropTypes } from '../../lib/propTypes';
 
-class CreateUser extends React.Component {
+class SignupContainer extends React.Component {
   static propTypes = {
     loggedInUserQuery: PropTypes.shape({
       loggedInUser: PropTypes.shape({
@@ -33,6 +33,7 @@ class CreateUser extends React.Component {
       email: '',
       password: '',
       name: '',
+      isSigningUp: false,
     };
   }
 
@@ -46,6 +47,9 @@ class CreateUser extends React.Component {
     e.preventDefault();
     const { email, password, name } = this.state;
 
+    this.setState({
+      isSigningUp: true,
+    });
     try {
       const user = await this.props.signupUserMutation({ variables: { email, password, name } });
       localStorage.setItem('graphcoolToken', user.data.signupUser.token);
@@ -53,6 +57,9 @@ class CreateUser extends React.Component {
       this.props.history.replace('/');
     } catch (err) {
       this.props.alert(errorMessageSanitizer(err.message));
+      this.setState({
+        isSigningUp: false,
+      });
     }
   }
 
@@ -69,7 +76,7 @@ class CreateUser extends React.Component {
 
     return (
       <Signup
-        isLoading={this.props.loggedInUserQuery.loading}
+        isSigningUp={this.state.isSigningUp}
         email={this.state.email}
         name={this.state.name}
         password={this.state.password}
@@ -93,8 +100,7 @@ export default compose(
   graphql(SIGNUP_USER_MUTATION, { name: 'signupUserMutation' }),
   graphql(LOGGED_IN_USER_QUERY, {
     name: 'loggedInUserQuery',
-    options: { fetchPolicy: 'network-only' },
   }),
   withDialogue,
   withRouter,
-)(CreateUser);
+)(SignupContainer);

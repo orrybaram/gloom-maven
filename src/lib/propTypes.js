@@ -5,9 +5,13 @@ export const withCurrentUserPropTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     email: PropTypes.string,
-  }).isRequired,
+  }),
   isUserLoading: PropTypes.bool.isRequired,
   refetchCurrentUser: PropTypes.func.isRequired,
+};
+
+export const withCurrentUserDefaultProps = {
+  currentUser: null,
 };
 
 export const withRouterPropTypes = {

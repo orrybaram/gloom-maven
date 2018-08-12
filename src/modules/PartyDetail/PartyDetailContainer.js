@@ -68,11 +68,11 @@ class PartyDetailContainer extends React.Component {
     if (newProps !== this.props && !newProps.partyQuery.loading) {
       return this.setState({
         partyFormData: {
-          name: newProps.partyQuery.Party.name,
-          location: newProps.partyQuery.Party.location,
-          notes: newProps.partyQuery.Party.notes,
-          achievements: newProps.partyQuery.Party.achievements,
-          reputation: newProps.partyQuery.Party.reputation,
+          name: newProps.partyQuery.Party.name || '',
+          location: newProps.partyQuery.Party.location || '',
+          notes: newProps.partyQuery.Party.notes || '',
+          achievements: newProps.partyQuery.Party.achievements || '',
+          reputation: newProps.partyQuery.Party.reputation || 0,
         },
         members: [...newProps.partyQuery.Party.members],
       });

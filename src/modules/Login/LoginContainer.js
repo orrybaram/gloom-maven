@@ -82,7 +82,6 @@ export default compose(
   graphql(AUTHENTICATE_USER_MUTATION, { name: 'authenticateUserMutation' }),
   graphql(LOGGED_IN_USER_QUERY, {
     name: 'loggedInUserQuery',
-    options: { fetchPolicy: 'network-only' },
   }),
   withRouter,
   withDialogue,
