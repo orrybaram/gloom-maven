@@ -32,7 +32,7 @@ export default class CreatePartyPage extends React.Component {
           </Label>
 
           <Box mt={3}>
-            <Button type="submit">
+            <Button variant="contained" type="submit">
               {this.props.isCreating ? 'Creating...' : 'Create'}
             </Button>
           </Box>

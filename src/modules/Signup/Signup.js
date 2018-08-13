@@ -75,6 +75,7 @@ export default class Signup extends React.Component {
                   type="submit"
                   disabled={this.isButtonDisabled()}
                   css="width: 100%"
+                  variant="contained"
                 >
                   {this.props.isSigningUp ? 'Signing Up...' : 'Sign up'}
                 </Button>

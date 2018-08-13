@@ -18,7 +18,6 @@ type Party @model {
   achievements: String
   admin: User! @relation(name: "UserOwnedParties")
   characters: [Character!]! @relation(name: "PartyCharacter")
-  imageUrl: String
   location: String @defaultValue(value: "Gloomhaven")
   members: [User!]! @relation(name: "UserJoinedParties")
   name: String!

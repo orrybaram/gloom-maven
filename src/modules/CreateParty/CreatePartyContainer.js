@@ -36,7 +36,7 @@ class CreatePartyContainer extends React.Component {
   handleSubmit = characterClassIds => async (e) => {
     e.preventDefault();
     const { currentUser } = this.props;
-    const { location, imageUrl, name } = this.state;
+    const { location, name } = this.state;
 
     // redirect if no user is logged in
     if (!currentUser) {
@@ -51,8 +51,8 @@ class CreatePartyContainer extends React.Component {
     const adminId = currentUser.id;
     const { data: { createParty: { id: partyId } } } = await this.props.createPartyMutation({
       variables: {
-        name, location, imageUrl, adminId,
-      },
+        name, location, adminId,
+      }
     });
 
     await Promise.all(characterClassIds.map(({ id: characterClassId }) => (
@@ -74,7 +74,6 @@ class CreatePartyContainer extends React.Component {
           <CreatePartyPage
             handleSubmit={this.handleSubmit(data.allCharacterClasses)}
             name={this.state.name}
-            location={this.state.location}
             onInputChange={this.onInputChange}
             isCreating={this.state.isCreating}
           />

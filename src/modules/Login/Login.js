@@ -58,7 +58,7 @@ export default class Login extends React.Component {
                 </Label>
               </Box>
               <Box mt={4}>
-                <Button type="submit" css="width: 100%">
+                <Button variant="contained" type="submit" css="width: 100%">
                   {this.props.isLoggingIn ? 'Logging in...' : 'Log in'}
                 </Button>
               </Box>
