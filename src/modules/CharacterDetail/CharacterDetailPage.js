@@ -30,7 +30,7 @@ export default class CharacterDetailPage extends React.Component {
         race: PropTypes.string,
         className: PropTypes.string,
         information: PropTypes.string,
-      })
+      }),
     }).isRequired,
     updateCharacter: PropTypes.func.isRequired,
     setInputRef: PropTypes.func.isRequired,

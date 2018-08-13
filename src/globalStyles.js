@@ -17,7 +17,7 @@ export default `
   }
 
   a {
-    color: ${colors.orange};
+    color: ${colors.primary};
     text-decoration: none;
   }
 

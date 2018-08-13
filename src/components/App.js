@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import { withRouter, Route, Switch } from 'react-router-dom';
+import { Flex, Box } from 'grid-styled/emotion';
 
 import CreateParty from '../modules/CreateParty';
 import CharacterDetail from '../modules/CharacterDetail';
-import Dashboard from '../modules/Dashboard';
+import PartyPanel from '../modules/PartyPanel';
 import PartyDetail from '../modules/PartyDetail';
 import Header from '../modules/Header';
 import Login from '../modules/Login';
@@ -36,14 +37,21 @@ class App extends React.Component {
             <Fragment>
               <Header isLoggedIn={isLoggedIn} />
               {isLoggedIn ? (
-                <Main>
-                  <Switch>
-                    <Route path="/party/create" component={CreateParty} />
-                    <Route path="/party/:id" component={PartyDetail} />
-                    <Route path="/character/:id" component={CharacterDetail} />
-                    <Route component={Dashboard} />
-                  </Switch>
-                </Main>
+                <Flex>
+                  <Box width="128px">
+                    <PartyPanel />
+                  </Box>
+                  <Box width="calc(100% - 128px);">
+                    <Main>
+                      <Switch>
+                        <Route path="/party/create" component={CreateParty} />
+                        <Route path="/party/:id" component={PartyDetail} />
+                        <Route path="/character/:id" component={CharacterDetail} />
+                        <Route component={() => (<div>hello!</div>)} />
+                      </Switch>
+                    </Main>
+                  </Box>
+                </Flex>
               ) : (
                 <Switch>
                   <Route path="/login" component={Login} />

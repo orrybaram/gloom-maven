@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import Icon from '@material-ui/core/Icon';
-import { Flex } from 'grid-styled/emotion';
 import { Card } from '../../components';
 
 export default class CharacterDetailModal extends React.Component {
@@ -31,6 +30,7 @@ export default class CharacterDetailModal extends React.Component {
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
+          scroll="body"
         >
           <Card>
             <h2>
