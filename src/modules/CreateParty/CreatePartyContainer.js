@@ -52,7 +52,7 @@ class CreatePartyContainer extends React.Component {
     const { data: { createParty: { id: partyId } } } = await this.props.createPartyMutation({
       variables: {
         name, location, adminId,
-      }
+      },
     });
 
     await Promise.all(characterClassIds.map(({ id: characterClassId }) => (

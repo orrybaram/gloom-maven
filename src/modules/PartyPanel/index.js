@@ -1,1 +1,1 @@
-export { default } from './PartyPanel';
+export { default } from './PartyPanelContainer';

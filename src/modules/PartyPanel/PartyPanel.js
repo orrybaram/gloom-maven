@@ -1,50 +1,42 @@
 import React from 'react';
-import styled from 'react-emotion';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Flex } from 'grid-styled/emotion';
+import { Box, Flex } from 'grid-styled/emotion';
 
-import PartyList from './PartyList';
-import withCurrentUser from '../../lib/withCurrentUser';
-import { withCurrentUserPropTypes } from '../../lib/propTypes';
+import { SmallText } from '../../components/utils';
+import * as S from './styles';
 
-const S = {};
-S.PartyPanel = styled.div`
-  background: #f1f1f1;
-  height: 100%;
-`;
+const propTypes = {
+  allParties: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+  })).isRequired,
+};
 
-S.AddPartyAvatar = styled(Avatar)`
-  border: 1px dashed black;
-  background: none;
-  height: 50px;
-  width: 50px;
-`;
-
-S.Icon = styled(Icon)`
-  color: gray;
-`;
-
-const propTypes = withCurrentUserPropTypes;
-
-const PartyPanel = ({ currentUser, isUserLoading }) => (
-  <S.PartyPanel>
-    {!isUserLoading && (
-      <Flex alignItems="center" flexDirection="column" p={2}>
-        <PartyList userId={currentUser.id} />
-        <Link to="/party/create">
-          <Tooltip placement="right" title="Create Party">
-            <S.AddPartyAvatar>
-              <S.Icon>add</S.Icon>
-            </S.AddPartyAvatar>
-          </Tooltip>
-        </Link>
-      </Flex>
-    )}
-  </S.PartyPanel>
+const PartyPanel = ({ allParties }) => (
+  <Flex alignItems="center" flexDirection="column" p={2}>
+    <SmallText>Your Parties</SmallText>
+    {allParties.map(party => (
+      <Link key={party.id} to={`/party/${party.id}`}>
+        <Tooltip placement="right" title={party.name}>
+          <Box my={2}>
+            <S.Avatar>
+              {party.name.substring(0, 2)}
+            </S.Avatar>
+          </Box>
+        </Tooltip>
+      </Link>
+    ))}
+    <Link to="/party/create">
+      <Tooltip placement="right" title="Create Party">
+        <S.AddPartyAvatar>
+          <S.Icon>add</S.Icon>
+        </S.AddPartyAvatar>
+      </Tooltip>
+    </Link>
+  </Flex>
 );
 
 PartyPanel.propTypes = propTypes;
-export default withCurrentUser(PartyPanel);
+export default PartyPanel;

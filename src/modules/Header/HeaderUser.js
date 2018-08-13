@@ -63,7 +63,7 @@ class HeaderUser extends React.Component {
           </Dialog>
         </S.HeaderUser>
       )
-    )
+    );
   }
 }
 
