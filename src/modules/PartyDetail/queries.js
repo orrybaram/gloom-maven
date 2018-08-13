@@ -50,18 +50,6 @@ export const UPDATE_PARTY_MUTATION = gql`
   }
 `;
 
-export const UPDATE_PARTY_MEMBERS_MUTATION = gql`
-  mutation UpdatePartyMemberMutation($joinedPartiesPartyId: ID!, $membersUserId: ID!) {
-    addToUserJoinedParties(joinedPartiesPartyId: $joinedPartiesPartyId, membersUserId: $membersUserId) {
-      membersUser {
-        id
-        email
-        name
-      }
-    }
-  }
-`;
-
 export const PARTY_QUERY = gql`
   query partyQuery($id: ID!) {
     Party(id: $id) {

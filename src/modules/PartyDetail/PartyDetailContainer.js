@@ -7,9 +7,9 @@ import {
   DELETE_PARTY_MUTATION,
   DELETE_CHARACTER_MUTATION,
   UPDATE_PARTY_MUTATION,
-  UPDATE_PARTY_MEMBERS_MUTATION,
   PARTY_QUERY,
 } from './queries';
+import { UPDATE_PARTY_MEMBERS_MUTATION } from '../../lib/queries';
 import PartyDetailPage from './PartyDetailPage';
 import withCurrentUser from '../../lib/withCurrentUser';
 import {
@@ -62,9 +62,7 @@ class PartyDetailContainer extends React.Component {
   };
 
   componentWillReceiveProps(newProps) {
-    if (!newProps.partyQuery.Party) {
-      return this.props.history.replace('/');
-    }
+    console.log(newProps);
     if (newProps !== this.props && !newProps.partyQuery.loading) {
       return this.setState({
         partyFormData: {

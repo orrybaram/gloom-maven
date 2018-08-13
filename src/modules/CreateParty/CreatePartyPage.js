@@ -12,9 +12,11 @@ import {
 export default class CreatePartyPage extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
+    handleJoinPartySubmit: PropTypes.func.isRequired,
     isCreating: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
     onInputChange: PropTypes.func.isRequired,
+    partyId: PropTypes.string.isRequired,
   }
 
   render() {
@@ -34,6 +36,24 @@ export default class CreatePartyPage extends React.Component {
           <Box mt={3}>
             <Button variant="contained" type="submit">
               {this.props.isCreating ? 'Creating...' : 'Create'}
+            </Button>
+          </Box>
+        </form>
+
+        <h1>Or Join Party</h1>
+        <form onSubmit={this.props.handleJoinPartySubmit}>
+          <Label>
+            <LabelText>Party ID</LabelText>
+            <Input
+              value={this.props.partyId}
+              placeholder="Party ID"
+              onChange={this.props.onInputChange('partyId')}
+            />
+          </Label>
+
+          <Box mt={3}>
+            <Button variant="contained" type="submit" disabled={!this.props.partyId.length}>
+              {this.props.isCreating ? 'Joining...' : 'Join'}
             </Button>
           </Box>
         </form>

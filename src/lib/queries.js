@@ -17,3 +17,15 @@ export const GET_CURRENT_USER = gql`
     }
   }
 `;
+
+export const UPDATE_PARTY_MEMBERS_MUTATION = gql`
+  mutation UpdatePartyMemberMutation($joinedPartiesPartyId: ID!, $membersUserId: ID!) {
+    addToUserJoinedParties(joinedPartiesPartyId: $joinedPartiesPartyId, membersUserId: $membersUserId) {
+      membersUser {
+        id
+        email
+        name
+      }
+    }
+  }
+`;

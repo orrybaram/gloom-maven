@@ -1,15 +1,22 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Query, graphql, compose } from 'react-apollo';
+import {
+  Query,
+  Mutation,
+  graphql,
+  compose,
+} from 'react-apollo';
 import PropTypes from 'prop-types';
 import {
   CREATE_PARTY_MUTATION,
   CREATE_CHARACTER_MUTATION,
   CHARACTER_CLASS_QUERY,
 } from './queries';
+import { UPDATE_PARTY_MEMBERS_MUTATION } from '../../lib/queries';
 import CreatePartyPage from './CreatePartyPage';
 import withCurrentUser from '../../lib/withCurrentUser';
-import { withRouterPropTypes } from '../../lib/propTypes';
+import withDialogue from '../../lib/withDialogue';
+import { withRouterPropTypes, withDialoguePropTypes } from '../../lib/propTypes';
 
 class CreatePartyContainer extends React.Component {
   static propTypes = {
@@ -19,12 +26,14 @@ class CreatePartyContainer extends React.Component {
     createPartyMutation: PropTypes.func.isRequired,
     createCharacterMutation: PropTypes.func.isRequired,
     ...withRouterPropTypes,
+    ...withDialoguePropTypes,
   }
 
   state = {
     name: '',
     location: 'Gloomhaven',
     isCreating: false,
+    partyId: '',
   }
 
   onInputChange = fieldName => (e) => {
@@ -67,18 +76,41 @@ class CreatePartyContainer extends React.Component {
     this.props.history.replace(`/party/${partyId}`);
   }
 
+  handleJoinPartySubmit = joinPartyMutation => async (e) => {
+    e.preventDefault();
+
+    try {
+      await joinPartyMutation({
+        variables: {
+          joinedPartiesPartyId: this.state.partyId,
+          membersUserId: this.props.currentUser.id,
+        },
+      });
+      this.props.history.replace(`/party/${this.state.partyId}`);
+    } catch (err) {
+      console.warn(err);
+      this.props.alert('There was a problem joining the group.');
+    }
+  }
+
   render() {
     return (
-      <Query query={CHARACTER_CLASS_QUERY}>
-        {({ data }) => (
-          <CreatePartyPage
-            handleSubmit={this.handleSubmit(data.allCharacterClasses)}
-            name={this.state.name}
-            onInputChange={this.onInputChange}
-            isCreating={this.state.isCreating}
-          />
+      <Mutation mutation={UPDATE_PARTY_MEMBERS_MUTATION}>
+        {joinPartyMutation => (
+          <Query query={CHARACTER_CLASS_QUERY}>
+            {({ data }) => (
+              <CreatePartyPage
+                handleSubmit={this.handleSubmit(data.allCharacterClasses)}
+                name={this.state.name}
+                onInputChange={this.onInputChange}
+                isCreating={this.state.isCreating}
+                partyId={this.state.partyId}
+                handleJoinPartySubmit={this.handleJoinPartySubmit(joinPartyMutation)}
+              />
+            )}
+          </Query>
         )}
-      </Query>
+      </Mutation>
     );
   }
 }
@@ -88,4 +120,5 @@ export default compose(
   graphql(CREATE_CHARACTER_MUTATION, { name: 'createCharacterMutation' }),
   withRouter,
   withCurrentUser,
+  withDialogue,
 )(CreatePartyContainer);

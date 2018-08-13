@@ -29,7 +29,7 @@ const PartyPanel = ({ allParties }) => (
       </Link>
     ))}
     <Link to="/party/create">
-      <Tooltip placement="right" title="Create Party">
+      <Tooltip placement="right" title="Add Party">
         <S.AddPartyAvatar>
           <S.Icon>add</S.Icon>
         </S.AddPartyAvatar>
