@@ -6,4 +6,4 @@ export const orange = 'rgba(209, 96, 61, 1)';
 export const yellow = 'rgba(221, 185, 103, 1)';
 export const paleYellow = 'rgba(208, 227, 127, 1)';
 export const gray = 'rgba(144, 144, 154, 1)';
-export const lightGray = 'rgb(222, 222, 239)';
+export const lightGray = 'rgb(189, 189, 191)';

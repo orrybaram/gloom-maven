@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Icon from '@material-ui/core/Icon';
+import { Flex } from 'grid-styled/emotion';
 import Loading from '../../components/Loading';
 import * as S from './styles';
 
@@ -67,7 +69,11 @@ export default class PartyDetailPage extends React.Component {
 
     return (
       <div>
-        <Link to="/">{'<-'} Back</Link>
+        <Link to="/">
+          <Flex alignItems="center">
+            <Icon>arrow_back_ios</Icon> Back
+          </Flex>
+        </Link>
         <h1>
           {Party.name}
         </h1>

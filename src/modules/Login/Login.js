@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box } from 'grid-styled/emotion';
-
+import { Link } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -11,7 +11,7 @@ import {
   LabelText,
 } from '../../components';
 
-
+import { SmallText } from '../../components/utils';
 import * as S from './styles';
 
 export default class Login extends React.Component {
@@ -32,6 +32,7 @@ export default class Login extends React.Component {
     return (
       <S.LoginPage>
         <Box width={[1, 1 / 2]} mx={4} css="max-width: 400px;">
+          <S.Title>Welcome back!</S.Title>
           <Card>
             <form onSubmit={this.props.onFormSubmit}>
               <Box mb={3}>
@@ -56,10 +57,16 @@ export default class Login extends React.Component {
                   />
                 </Label>
               </Box>
-
-              <Button type="submit">
-                {this.props.isLoggingIn ? 'Logging in...' : 'Log in'}
-              </Button>
+              <Box mt={4}>
+                <Button type="submit" css="width: 100%">
+                  {this.props.isLoggingIn ? 'Logging in...' : 'Log in'}
+                </Button>
+              </Box>
+              <Box mt={2}>
+                <SmallText>
+                  Need an account? <Link to="/signup">Register</Link>
+                </SmallText>
+              </Box>
             </form>
           </Card>
         </Box>

@@ -11,8 +11,9 @@ export default `
   }
 
   body {
-    background-color: ${colors.paleYellow};
+    background-color: ${colors.black};
     font-family: 'Open Sans', sans-serif;
+    color: #313131;
   }
 
   a {

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box } from 'grid-styled/emotion';
+import { Link } from 'react-router-dom';
 
 import {
   Button,
@@ -10,7 +11,7 @@ import {
   Label,
   LabelText,
 } from '../../components';
-
+import { SmallText } from '../../components/utils';
 import * as S from './styles';
 
 export default class Signup extends React.Component {
@@ -34,6 +35,7 @@ export default class Signup extends React.Component {
     return (
       <S.SignupPage>
         <Box width={[1, 1 / 2]} mx={4} css="max-width: 400px;">
+          <S.Title>Create an account</S.Title>
           <Card>
             <form onSubmit={this.props.onFormSubmit}>
               <Box mb={3}>
@@ -68,12 +70,20 @@ export default class Signup extends React.Component {
                   />
                 </Label>
               </Box>
-              <Button
-                type="submit"
-                disabled={this.isButtonDisabled()}
-              >
-                {this.props.isSigningUp ? 'Signing Up...' : 'Sign up'}
-              </Button>
+              <Box mt={4}>
+                <Button
+                  type="submit"
+                  disabled={this.isButtonDisabled()}
+                  css="width: 100%"
+                >
+                  {this.props.isSigningUp ? 'Signing Up...' : 'Sign up'}
+                </Button>
+              </Box>
+              <Box mt={2}>
+                <SmallText>
+                  <Link to="/login">Already have an account?</Link>
+                </SmallText>
+              </Box>
             </form>
           </Card>
         </Box>

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
+import Icon from '@material-ui/core/Icon';
 import PartyList from './PartyList';
 import withCurrentUser from '../../lib/withCurrentUser';
 import { withCurrentUserPropTypes } from '../../lib/propTypes';

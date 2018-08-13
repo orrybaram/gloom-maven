@@ -1,7 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Icon from '@material-ui/core/Icon';
+import { Box, Flex } from 'grid-styled/emotion';
 import { Hidden } from '../../components/utils';
+import {
+  Input,
+  Textarea,
+  Label,
+  LabelText,
+} from '../../components';
+
+import CharacterDetailModal from './CharacterDetailModal';
 import * as S from './styles';
 
 
@@ -16,6 +26,11 @@ export default class CharacterDetailPage extends React.Component {
       perkFragments: PropTypes.number,
       perks: PropTypes.string,
       xp: PropTypes.number,
+      characterClass: PropTypes.shape({
+        race: PropTypes.string,
+        className: PropTypes.string,
+        information: PropTypes.string,
+      })
     }).isRequired,
     updateCharacter: PropTypes.func.isRequired,
     setInputRef: PropTypes.func.isRequired,
@@ -25,45 +40,69 @@ export default class CharacterDetailPage extends React.Component {
     const { character, setInputRef, updateCharacter } = this.props;
 
     return (
-      <div>
-        <Link to={`/party/${character.party.id}`}>{'<-'} Back</Link>
+      <Box width={[1, 0.5, 0.333]}>
+        <Link to={`/party/${character.party.id}`}>
+          <Flex alignItems="center">
+            <Icon>arrow_back_ios</Icon> Back
+          </Flex>
+        </Link>
+        <Box mt={3}>
+          <form onSubmit={updateCharacter}>
+            <S.EditableH1 defaultValue={character.name} innerRef={setInputRef('name')} placeholder="Name..." />
+            <Hidden><button type="submit">Update Character</button></Hidden>
+          </form>
 
-        <form onSubmit={updateCharacter}>
-          <S.EditableH1 defaultValue={character.name} innerRef={setInputRef('name')} placeholder="Name..." />
-          <Hidden><button type="submit">Update Character</button></Hidden>
-        </form>
+          <h2>
+            {character.characterClass.race} {character.characterClass.className}
 
-        <h2>{character.characterClass.className} - {character.characterClass.race}</h2>
-        <p>{character.characterClass.information}</p>
+            <CharacterDetailModal
+              race={character.characterClass.race}
+              className={character.characterClass.className}
+              information={character.characterClass.information}
+            />
+          </h2>
+          <form onSubmit={updateCharacter}>
+            <Box mb={2}>
+              <Label>
+                <LabelText>Level</LabelText>
+                <Input defaultValue={character.level} innerRef={setInputRef('level')} type="number" />
+              </Label>
+            </Box>
+            <Box mb={2}>
+              <Label>
+                <LabelText>Xp</LabelText>
+                <Input defaultValue={character.xp} innerRef={setInputRef('xp')} type="number" />
+              </Label>
+            </Box>
+            <Box mb={2}>
+              <Label>
+                <LabelText>Gold</LabelText>
+                <Input defaultValue={character.gold} innerRef={setInputRef('gold')} type="number" />
+              </Label>
+            </Box>
+            <Box mb={2}>
+              <Label>
+                <LabelText>Items</LabelText>
+                <Textarea defaultValue={character.items} innerRef={setInputRef('items')} />
+              </Label>
+            </Box>
+            <Box mb={2}>
+              <Label>
+                <LabelText>Perk Fragments</LabelText>
+                <Input defaultValue={character.perkFragments} innerRef={setInputRef('perkFragments')} type="number" />
+              </Label>
+            </Box>
+            <Box mb={2}>
+              <Label>
+                <LabelText>Perks</LabelText>
+                <Textarea defaultValue={character.perks} innerRef={setInputRef('perks')} />
+              </Label>
+            </Box>
 
-        <form onSubmit={updateCharacter}>
-          <S.Label>
-            Gold
-            <input defaultValue={character.gold} ref={setInputRef('gold')} type="number" />
-          </S.Label>
-          <S.Label>
-            Items
-            <textarea defaultValue={character.items} ref={setInputRef('items')} />
-          </S.Label>
-          <S.Label>
-            Level
-            <input defaultValue={character.level} ref={setInputRef('level')} type="number" />
-          </S.Label>
-          <S.Label>
-            Perk Fragments
-            <input defaultValue={character.perkFragments} ref={setInputRef('perkFragments')} type="number" />
-          </S.Label>
-          <S.Label>
-            Perks
-            <textarea defaultValue={character.perks} ref={setInputRef('perks')} />
-          </S.Label>
-          <S.Label>
-          Xp
-            <input defaultValue={character.xp} ref={setInputRef('xp')} type="number" />
-          </S.Label>
-          <Hidden><button type="submit">Update Character</button></Hidden>
-        </form>
-      </div>
+            <Hidden><button type="submit">Update Character</button></Hidden>
+          </form>
+        </Box>
+      </Box>
     );
   }
 }
