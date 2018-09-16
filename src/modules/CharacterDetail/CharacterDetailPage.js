@@ -12,7 +12,7 @@ import {
 } from '../../components';
 
 import CharacterDetailModal from './CharacterDetailModal';
-import  { CharacterEncounterPage } from '../CharacterEncounter';
+import { CharacterEncounterPage } from '../CharacterEncounter';
 
 import * as S from './styles';
 

@@ -11,7 +11,6 @@ import {
   Input,
   Textarea,
 } from '../../components';
-import * as S from './styles';
 
 export default class PartyDetailPage extends React.Component {
   static propTypes = {
@@ -107,7 +106,7 @@ export default class PartyDetailPage extends React.Component {
         </div>
 
 
-        <h4>characters</h4>
+        <h3>Characters</h3>
         {Party.characters.map(character => (
           <div key={character.id}>
             <Link to={`/character/${character.id}`}>

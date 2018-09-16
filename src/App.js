@@ -3,17 +3,17 @@ import { Query } from 'react-apollo';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import { Flex, Box } from 'grid-styled/emotion';
 
-import CreateParty from '../modules/CreateParty';
-import CharacterDetail from '../modules/CharacterDetail';
-import PartyPanel from '../modules/PartyPanel';
-import PartyDetail from '../modules/PartyDetail';
-import Header from '../modules/Header';
-import Login from '../modules/Login';
-import Signup from '../modules/Signup';
+import CreateParty from './modules/CreateParty';
+import CharacterDetail from './modules/CharacterDetail';
+import PartyPanel from './modules/PartyPanel';
+import PartyDetail from './modules/PartyDetail';
+import Header from './modules/Header';
+import Login from './modules/Login';
+import Signup from './modules/Signup';
 
-import Loading from './Loading';
-import Main from './Main';
-import { LOGGED_IN_USER_QUERY } from '../lib/queries';
+import Loading from './components/Loading';
+import Main from './components/Main';
+import { LOGGED_IN_USER_QUERY } from './lib/queries';
 
 
 class App extends React.Component {
@@ -32,6 +32,8 @@ class App extends React.Component {
           }
 
           const isLoggedIn = this.isLoggedIn(data.loggedInUser);
+
+          console.log(data.loggedInUser);
 
           return (
             <Fragment>

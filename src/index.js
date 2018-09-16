@@ -8,7 +8,7 @@ import { ApolloLink } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import styled, { injectGlobal } from 'react-emotion';
 
-import App from './components/App';
+import App from './App';
 import { graphcoolEndpoint } from './config';
 import globalStyles from './globalStyles';
 
