@@ -38,10 +38,10 @@ class App extends React.Component {
               <Header isLoggedIn={isLoggedIn} />
               {isLoggedIn ? (
                 <Flex>
-                  <Box width="128px">
+                  <Box width={['60px', '128px']}>
                     <PartyPanel />
                   </Box>
-                  <Box width="calc(100% - 128px);">
+                  <Box width={['calc(100% - 60px)', 'calc(100% - 128px)']}>
                     <Main>
                       <Switch>
                         <Route path="/party/create" component={CreateParty} />

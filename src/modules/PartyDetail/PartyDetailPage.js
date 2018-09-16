@@ -2,8 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Icon from '@material-ui/core/Icon';
-import { Flex } from 'grid-styled/emotion';
-import Loading from '../../components/Loading';
+import { Box, Flex } from 'grid-styled/emotion';
+import {
+  Button,
+  Loading,
+  Label,
+  LabelText,
+  Input,
+  Textarea,
+} from '../../components';
 import * as S from './styles';
 
 export default class PartyDetailPage extends React.Component {
@@ -77,7 +84,7 @@ export default class PartyDetailPage extends React.Component {
         <h1>
           {Party.name}
         </h1>
-        <h2>{Party.location}</h2>
+        <Icon>explore</Icon>{Party.location}
 
         <div>
           admin:
@@ -111,57 +118,60 @@ export default class PartyDetailPage extends React.Component {
 
         {isCurrentUserAdmin && (
           <div>
-            <h3>Admin:</h3>
-            <form onSubmit={onSubmitEditForm}>
-              <S.Label>
-                <S.LabelText>Name</S.LabelText>
-                <input
-                  value={editPartyFormData.name}
-                  placeholder="Name"
-                  onChange={onInputChange({ formName: 'party', fieldName: 'name' })}
-                />
-              </S.Label>
-              <S.Label>
-                <S.LabelText>Location</S.LabelText>
-                <input
-                  value={editPartyFormData.location}
-                  placeholder="Location"
-                  onChange={onInputChange({ formName: 'party', fieldName: 'location' })}
-                />
-              </S.Label>
-              <S.Label>
-                <S.LabelText>Notes</S.LabelText>
-                <textarea
-                  value={editPartyFormData.notes}
-                  placeholder="Notes"
-                  onChange={onInputChange({ formName: 'party', fieldName: 'notes' })}
-                />
-              </S.Label>
-              <S.Label>
-                <S.LabelText>Reputation</S.LabelText>
-                <input
-                  value={editPartyFormData.reputation}
-                  placeholder="Reputation"
-                  onChange={onInputChange({ formName: 'party', fieldName: 'reputation' })}
-                />
-              </S.Label>
-              <S.Label>
-                <S.LabelText>Achievements</S.LabelText>
-                <textarea
-                  value={editPartyFormData.achievements}
-                  placeholder="Achievements"
-                  onChange={onInputChange({ formName: 'party', fieldName: 'achievements' })}
-                />
-              </S.Label>
+            <hr />
+            <h3>Admin</h3>
+            <Box width={[1, 1 / 3]}>
+              <form onSubmit={onSubmitEditForm}>
+                <Label mb={2}>
+                  <LabelText>Name</LabelText>
+                  <Input
+                    value={editPartyFormData.name}
+                    placeholder="Name"
+                    onChange={onInputChange({ formName: 'party', fieldName: 'name' })}
+                  />
+                </Label>
+                <Label mb={2}>
+                  <LabelText>Location</LabelText>
+                  <Input
+                    value={editPartyFormData.location}
+                    placeholder="Location"
+                    onChange={onInputChange({ formName: 'party', fieldName: 'location' })}
+                  />
+                </Label>
+                <Label mb={2}>
+                  <LabelText>Notes</LabelText>
+                  <Textarea
+                    value={editPartyFormData.notes}
+                    placeholder="Notes"
+                    onChange={onInputChange({ formName: 'party', fieldName: 'notes' })}
+                  />
+                </Label>
+                <Label mb={2}>
+                  <LabelText>Reputation</LabelText>
+                  <Input
+                    value={editPartyFormData.reputation}
+                    placeholder="Reputation"
+                    onChange={onInputChange({ formName: 'party', fieldName: 'reputation' })}
+                  />
+                </Label>
+                <Label mb={2}>
+                  <LabelText>Achievements</LabelText>
+                  <Textarea
+                    value={editPartyFormData.achievements}
+                    placeholder="Achievements"
+                    onChange={onInputChange({ formName: 'party', fieldName: 'achievements' })}
+                  />
+                </Label>
 
-              <button type="submit">
-                Update
-              </button>
-            </form>
+                <Button type="submit" variant="contained">
+                  Update
+                </Button>
+              </form>
+            </Box>
 
             <hr />
 
-            <h4>Party Members</h4>
+            <h3>Party Members</h3>
             <ul>
               {this.props.members.map(member => (
                 <li key={member.email}><strong>{member.name}</strong> {member.email}</li>
@@ -169,19 +179,28 @@ export default class PartyDetailPage extends React.Component {
             </ul>
 
             <form onSubmit={onSubmitAddMemberForm}>
-              <input
-                placeholder="Add member by email"
-                value={editMemberFormData.email}
-                onChange={onInputChange({ formName: 'member', fieldName: 'email' })}
-              />
-              <button type="submit">Add</button>
+              <Flex width={[1, 0.5]}>
+                <Box width={0.75}>
+                  <Input
+                    placeholder="Add member by email"
+                    value={editMemberFormData.email}
+                    onChange={onInputChange({ formName: 'member', fieldName: 'email' })}
+                  />
+                </Box>
+
+                <Box width={0.25} ml={2}>
+                  <Button type="submit" variant="contained">Add</Button>
+                </Box>
+              </Flex>
             </form>
 
             <hr />
 
-            <button type="button" onClick={handleDelete}>
-              {isDeleting ? 'Deleting...' : 'Delete'}
-            </button>
+            <h3>Danger Zone</h3>
+            <p>Delete party, this cannot be undone</p>
+            <Button type="button" color="danger" onClick={handleDelete} variant="contained">
+              {isDeleting ? 'Deleting...' : 'Delete Party'}
+            </Button>
           </div>
         )}
       </div>

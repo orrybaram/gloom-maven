@@ -2,7 +2,7 @@ import styled from 'react-emotion';
 import MuiAvatar from '@material-ui/core/Avatar';
 import MuiIcon from '@material-ui/core/Icon';
 
-import { secondary, black } from '../../lib/theme';
+import { secondary, black, background1 } from '../../lib/theme';
 
 export const Avatar = styled(MuiAvatar)`
   && {
@@ -14,7 +14,7 @@ export const Avatar = styled(MuiAvatar)`
 `;
 
 export const PartyPanel = styled.div`
-  background: #f1f1f1;
+  background: ${background1};
   height: 100%;
 `;
 

@@ -8,8 +8,8 @@ export const LoginPage = styled.div`
   justify-content: center;
   background:
     linear-gradient(
-      rgba(191, 81, 16, 0.79),
-      rgba(58, 0, 13, 0.9)
+      rgba(159, 106, 220, 0.82),
+      rgba(47, 31, 66, 0.95)
     ),
     url(${backgroundImage});
   background-size: cover;
@@ -20,3 +20,4 @@ export const Title = styled.h1`
   font-weight: 100;
   color: white;
 `;
+

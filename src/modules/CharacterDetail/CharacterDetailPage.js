@@ -12,6 +12,8 @@ import {
 } from '../../components';
 
 import CharacterDetailModal from './CharacterDetailModal';
+import  { CharacterEncounterPage } from '../CharacterEncounter';
+
 import * as S from './styles';
 
 
@@ -102,6 +104,7 @@ export default class CharacterDetailPage extends React.Component {
             <Hidden><button type="submit">Update Character</button></Hidden>
           </form>
         </Box>
+        <CharacterEncounterPage characterId={character.id} />
       </Box>
     );
   }

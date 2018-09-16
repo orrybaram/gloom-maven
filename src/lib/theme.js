@@ -1,12 +1,19 @@
-export const darkBlack = '#0f1519';
 export const black = '#0f202c';
 export const blue = 'rgba(24, 184, 232, 1)';
 export const brown = 'rgba(79, 56, 36, 1)';
-export const orange = 'rgba(209, 96, 61, 1)';
-export const yellow = 'rgba(221, 185, 103, 1)';
-export const paleYellow = 'rgba(208, 227, 127, 1)';
+export const darkBlack = '#0f1519';
 export const gray = 'rgba(144, 144, 154, 1)';
+export const gray10 = '#F1F1F1';
+export const lavender = '#9f6ddc';
 export const lightGray = 'rgb(189, 189, 191)';
+export const orange = 'rgba(209, 96, 61, 1)';
+export const paleYellow = 'rgba(208, 227, 127, 1)';
+export const white = '#FFFFFF';
+export const yellow = 'rgba(221, 185, 103, 1)';
+export const red = '#ef2665';
 
-export const primary = orange;
+export const background = white;
+export const background1 = gray10;
+export const primary = lavender;
 export const secondary = paleYellow;
+export const danger = red;
